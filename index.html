@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#20242b">
+<title>Diseñador Editorial MARCOS | Inicio</title>
+<style>
+:root{--ink:#20242b;--muted:#667085;--line:#e3e7ed;--orange:#e87524;--soft:#fff4ec}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#20242b 0 270px,#f3f5f7 270px 100%);color:var(--ink);font:16px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+main{width:min(1060px,calc(100% - 32px));margin:0 auto;padding:42px 0 34px}
+.hero{color:#fff;text-align:center;padding:10px 12px 32px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#ffb98f}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:10px 0 12px}
+.hero p{max-width:680px;margin:0 auto;color:#d0d5dd;font-size:16px}
+.choose{font-size:14px;font-weight:800;text-align:center;letter-spacing:.08em;text-transform:uppercase;color:#667085;margin:4px 0 16px}
+.versions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 14px 35px #10182812;display:flex;flex-direction:column;min-height:390px}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.version{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#b84d17}
+.pill{font-size:11px;font-weight:800;background:#f2f4f7;color:#475467;padding:6px 10px;border-radius:20px}
+.icon{width:58px;height:58px;border-radius:16px;background:var(--soft);display:grid;place-items:center;color:var(--orange);font-size:30px;margin:18px 0 12px}
+h2{font-size:25px;line-height:1.2;margin:0 0 10px}
+.desc{color:var(--muted);margin:0 0 14px}
+ul{padding-left:20px;margin:0 0 22px;color:#475467;font-size:14px}
+li{margin:5px 0}
+.enter{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:66px;margin-top:auto;padding:16px 20px;border-radius:14px;background:linear-gradient(180deg,#ff9848,#e76519);color:#fff;text-decoration:none;font-size:19px;font-weight:900;box-shadow:0 6px 0 #a94b13,0 10px 18px #10182820;transition:transform .15s,filter .15s}
+.enter:hover{transform:translateY(-3px);filter:brightness(1.04)}
+.enter:active{transform:translateY(3px);box-shadow:0 2px 0 #a94b13}
+.enter:focus-visible{outline:4px solid #f7c49f;outline-offset:4px}
+.note{margin:24px auto 0;padding:14px 18px;max-width:760px;border:1px solid #e1e5ea;border-radius:12px;background:#fff;color:#667085;text-align:center;font-size:13px}
+footer{text-align:center;color:#98a2b3;font-size:12px;margin-top:22px}
+@media(max-width:720px){body{background:linear-gradient(180deg,#20242b 0 300px,#f3f5f7 300px 100%)}.versions{grid-template-columns:1fr}.card{min-height:0;padding:22px}.enter{min-height:72px;font-size:20px}}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#20242b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="./pwa-icons/icon-192.png">
+</head>
+<body>
+<main>
+<header class="hero">
+  <div class="eyebrow">Herramienta de diseño y planificación</div>
+  <h1>Diseñador editorial<br>MARCOS</h1>
+  <p>Bienvenido. Elige el diseñador con el que deseas trabajar. Presiona uno de los botones grandes para ingresar directamente.</p>
+</header>
+<div class="choose">Selecciona una versión para comenzar</div>
+<section class="versions" aria-label="Versiones disponibles">
+  <article class="card">
+    <div class="card-top"><span class="version">Versión 20</span><span class="pill">Diseño completo</span></div>
+    <div class="icon" aria-hidden="true">▤</div>
+    <h2>Apertura con imagen central</h2>
+    <p class="desc">Diseñador con opciones detalladas para planificar y construir tu libro didáctico.</p>
+    <ul>
+      <li>Configuración del proyecto y estilo MARCOS.</li>
+      <li>Planificación de estructura y páginas.</li>
+      <li>Componentes, revisión y generación de prompts.</li>
+    </ul>
+    <a class="enter" href="disenador_editorial_marcos_v20.html">ENTRAR A VERSIÓN 20 <span aria-hidden="true">➜</span></a>
+  </article>
+  <article class="card">
+    <div class="card-top"><span class="version">Versión 21</span><span class="pill">Interfaz sencilla</span></div>
+    <div class="icon" aria-hidden="true">✦</div>
+    <h2>Diseñador simplificado</h2>
+    <p class="desc">Una experiencia más directa, con menos pasos y opciones visibles para trabajar con rapidez.</p>
+    <ul>
+      <li>Datos principales del libro.</li>
+      <li>Organización de páginas y temario.</li>
+      <li>Generación directa, sin el apartado «3. Aprendizajes».</li>
+    </ul>
+    <a class="enter" href="disenador_editorial_marcos_v21.html">ENTRAR A VERSIÓN 21 <span aria-hidden="true">➜</span></a>
+  </article>
+</section>
+<div class="note"><strong>Importante:</strong> mantén este archivo <em>index.html</em> y los dos HTML de las versiones dentro de la misma carpeta. Así los botones abrirán correctamente cada diseñador.</div>
+<footer>Diseñador Editorial MARCOS · Selector de versiones</footer>
+</main>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.warn("No se pudo registrar el modo PWA:", error));
+  });
+}
+</script>
+
+</body>
+</html>

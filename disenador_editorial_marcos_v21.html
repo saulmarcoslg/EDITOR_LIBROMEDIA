@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseñador Editorial MARCOS – Versión 21</title>
+<style>
+:root{--ink:#20242b;--muted:#667085;--line:#e4e7ec;--bg:#f4f6f8;--card:#fff;--accent:#e85b22;--soft:#fff1e9;--blue:#176b87;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
+header{background:#20242b;color:#fff;padding:24px max(20px,calc((100% - 1180px)/2));}
+header .eyebrow{color:#ffb28e;text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:800}
+header h1{font-size:clamp(25px,4vw,36px);margin:5px 0}header p{margin:0;color:#d0d5dd;max-width:780px}
+.wrap{max-width:1180px;margin:22px auto;padding:0 18px 50px;display:grid;grid-template-columns:250px 1fr;gap:20px}
+nav,.panel,.preview{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+nav{padding:14px;height:max-content;position:sticky;top:12px}
+.step{display:flex;gap:10px;align-items:center;padding:11px 9px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:650}
+.step b{width:27px;height:27px;border-radius:50%;background:#eef0f3;display:grid;place-items:center;font-size:12px}
+.step.active{background:var(--soft);color:#9d3a12}.step.active b{background:var(--accent);color:white}
+.step.done b{background:#d1fadf;color:#067647}
+main{min-width:0}.panel{padding:24px;margin-bottom:16px}
+.panel h2{font-size:22px;margin:0 0 5px}.intro{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+label{font-weight:700;font-size:13px}input,select,textarea{width:100%;border:1px solid #cfd4dc;border-radius:9px;padding:11px 12px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus{outline:3px solid #fce0d2;border-color:var(--accent)}
+.hint{font-size:12px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.choice{border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;background:white;text-align:left;transition:.15s}
+.choice:hover{border-color:var(--accent);transform:translateY(-1px)}.choice.selected{border:2px solid var(--accent);background:#fff8f4;padding:11px}
+.choice strong{display:block;margin:7px 0 3px}.choice small{color:var(--muted);display:block}
+.mini{height:94px;border-radius:8px;padding:8px;background:#fafafa;border:1px solid #e8e8e8;display:flex;gap:6px;overflow:hidden}
+.mini .bar{height:8px;background:var(--accent);width:45%;margin-bottom:6px}.mini .col{flex:1;background:#e9ecef;padding:6px}.mini .photo{height:35px;background:#cbd5e1;margin-bottom:5px}.mini .lines{height:4px;background:#c5cbd3;margin:5px 0}
+.swatches{display:flex;gap:7px;align-items:center;margin-top:8px}.swatch{width:24px;height:24px;border-radius:6px;border:1px solid #ddd}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.check{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);padding:10px;border-radius:10px}.check input{width:auto;margin-top:4px}.check span{font-size:13px}
+.actions{display:flex;justify-content:space-between;gap:10px;margin:16px 0}.btn{border:0;border-radius:9px;padding:11px 16px;font-weight:750;cursor:pointer;font:inherit}.primary{background:var(--accent);color:#fff}.secondary{background:#eef0f3;color:var(--ink)}.dark{background:#20242b;color:#fff}.btn:disabled{opacity:.4;cursor:not-allowed}
+.notice{padding:12px 14px;border-radius:10px;background:#f2f8fb;border-left:4px solid var(--blue);font-size:13px;margin:12px 0}
+.alert{padding:12px 14px;border-radius:10px;background:#fff5e8;border-left:4px solid #e69a24;margin:9px 0;font-size:13px}
+.success{background:#ecfdf3;border-left-color:#12b76a}
+.preview{padding:18px;margin-top:16px}.preview h3{margin:0 0 10px}.page-sample{background:white;border:1px solid #ddd;width:min(100%,480px);aspect-ratio:8.5/11;min-height:0;margin:10px auto;padding:17px;box-shadow:0 4px 15px #0000000a}
+.sample-head{display:flex;align-items:center;gap:8px;border-bottom:3px solid var(--accent);padding-bottom:7px;font-weight:850;font-size:18px}.sample-num{border:2px solid var(--accent);color:var(--accent);font-size:25px;padding:2px 9px}
+.sample-body{display:grid;grid-template-columns:.68fr 1.32fr;gap:12px;margin-top:12px;font:12px/1.45 Georgia,serif}.sample-body.reverse{grid-template-columns:1.32fr .68fr}.sample-body.reverse .sample-side{order:2}.sample-body.reverse .sample-main{order:1}.sample-side{min-width:0;padding:5px;background:#fff8f0;border-left:2px solid var(--accent)}.sample-main{min-width:0}.sample-block{height:8px;background:#d6d9de;margin:7px 0;border-radius:2px}.sample-img{height:100px;background:linear-gradient(135deg,#d6dce1,#aab5bf);display:grid;place-items:center;color:#475467;font:12px Arial}.sample-callout{background:#fff1c9;border:1px solid var(--accent);padding:9px;margin-top:10px;font:12px Arial}
+.output{min-height:350px;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}
+.page-card,.prompt-card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
+.page-card summary{cursor:pointer;font-weight:800}
+.page-card .page-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:13px}
+.page-card .full{grid-column:1/-1}
+.page-card .mini-checks{display:flex;flex-wrap:wrap;gap:7px}
+.page-card .mini-checks label{border:1px solid var(--line);border-radius:18px;padding:6px 9px;font-size:12px;display:flex;gap:5px;align-items:center}
+.page-card .mini-checks input{width:auto;margin:0}
+.prompt-card header{background:transparent;color:var(--ink);padding:0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.prompt-card textarea{min-height:190px;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+@media(max-width:600px){.page-card .page-fields{grid-template-columns:1fr}.page-card .full{grid-column:auto}}
+.hidden{display:none!important}.footer-note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}nav{position:static;display:flex;overflow:auto;gap:4px}.step{white-space:nowrap}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.grid,.checks,.cards{grid-template-columns:1fr}.panel{padding:17px}.sample-body{grid-template-columns:1fr}}
+
+/* Botones de acción importantes con relieve 3D */
+.btn-3d{
+  position:relative;
+  isolation:isolate;
+  border:1px solid rgba(255,255,255,.32)!important;
+  border-radius:12px!important;
+  padding:12px 19px!important;
+  font-weight:800!important;
+  letter-spacing:.12px;
+  transform:translateY(0);
+  transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  box-shadow:0 5px 0 var(--btn-shadow,#a94412),0 8px 15px rgba(25,35,45,.16),inset 0 1px 0 rgba(255,255,255,.45)!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.14);
+}
+.btn-3d::before{
+  content:"";
+  position:absolute;
+  inset:1px 1px 52%;
+  border-radius:10px 10px 7px 7px;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0));
+  pointer-events:none;
+  z-index:-1;
+}
+.btn-3d:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.045);
+  box-shadow:0 7px 0 var(--btn-shadow,#a94412),0 12px 19px rgba(25,35,45,.19),inset 0 1px 0 rgba(255,255,255,.5)!important;
+}
+.btn-3d:active{
+  transform:translateY(4px);
+  box-shadow:0 1px 0 var(--btn-shadow,#a94412),0 3px 7px rgba(25,35,45,.14),inset 0 2px 4px rgba(0,0,0,.13)!important;
+}
+.btn-3d:focus-visible{outline:3px solid rgba(25,118,210,.35);outline-offset:4px}
+.btn-3d.primary,.btn-3d:not(.secondary):not(.dark){--btn-shadow:#a94b13;background:linear-gradient(180deg,#ff9b43 0%,#f47721 58%,#df5e12 100%)!important;color:#fff!important}
+.btn-3d.dark{--btn-shadow:#101318;background:linear-gradient(180deg,#454b55 0%,#262b33 58%,#171b22 100%)!important;color:#fff!important}
+.btn-3d.secondary{--btn-shadow:#aeb7c2;background:linear-gradient(180deg,#fff 0%,#edf1f5 58%,#dce2e9 100%)!important;color:#263342!important;border-color:#d4dbe3!important;text-shadow:none}
+.btn-3d.copy-action{--btn-shadow:#087b70;background:linear-gradient(180deg,#42d7c1 0%,#13b8a5 58%,#079486 100%)!important;color:#073b37!important}
+.btn-3d.download-action{--btn-shadow:#255a9d;background:linear-gradient(180deg,#78b7ff 0%,#428de3 58%,#286cc2 100%)!important;color:#fff!important}
+.btn-3d:disabled{opacity:.5;transform:none;box-shadow:none!important}
+@media(prefers-reduced-motion:reduce){.btn-3d{transition:none}}
+
+
+.topic-manager{margin-top:22px;padding:18px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.topic-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.topic-head h3{margin:0 0 5px;font-size:17px}.topic-head .intro{margin:0 0 12px;font-size:13px}
+.topic-tag{font-size:11px;font-weight:800;color:#52606d;background:#f1f3f5;border-radius:20px;padding:5px 9px;white-space:nowrap}
+.topic-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.topic-help{font-size:12px;color:var(--muted);background:#f7f8fa;padding:10px 12px;border-radius:9px}
+.topic-rows{display:grid;gap:10px;margin-top:12px}
+.topic-row{border:1px solid #e1e5ea;border-radius:11px;padding:12px;display:grid;grid-template-columns:55px minmax(130px,1fr) minmax(180px,1.5fr) 90px 34px;gap:8px;align-items:start}
+.topic-row label{display:block;font-size:11px;color:#586474;margin-bottom:4px}
+.topic-row input,.topic-row textarea{font-size:13px;padding:8px 9px;min-height:38px}
+.topic-row textarea{min-height:58px}
+.topic-row .topic-remove{border:0;background:#fff0ed;color:#b42318;border-radius:8px;padding:8px;cursor:pointer;font-weight:800}
+.topic-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:12px;color:var(--muted)}
+.topic-ai-result{margin-top:14px;padding:13px;border:1px solid #b7e7df;border-radius:11px;background:#f4fffc}
+.topic-ai-result p{font-size:12px;color:#52606d;margin:5px 0 10px}
+.topic-ai-result textarea{width:100%;margin-bottom:9px}
+@media(max-width:760px){.topic-row{grid-template-columns:55px 1fr}.topic-row .wide{grid-column:1/-1}.topic-row .topic-remove{grid-column:2;justify-self:start}}
+
+
+.voice-bar{position:sticky;top:0;z-index:30;background:#fff;border:1px solid #d0d5dd;border-radius:12px;padding:9px 12px;margin:0 0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;box-shadow:0 5px 18px #10182812}.voice-bar button,.voice-btn{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.voice-bar button:hover,.voice-btn:hover{border-color:var(--accent);background:#fff8f4}.voice-status{font-size:12px;color:#667085}.voice-btn{padding:4px 7px;margin-left:5px;font-size:11px;vertical-align:middle}.voice-section{display:flex;justify-content:flex-end;margin:-5px 0 10px}.topic-row{grid-template-columns:70px minmax(180px,1fr) minmax(180px,1fr)}.topic-row .wide{grid-column:1/-1}.topic-row textarea{min-height:75px}.voice-recording{background:#fff0f0!important;border-color:#d92d20!important;color:#b42318!important}
+
+/* Identidad visual específica por familia de página */
+.page-card.estilo-inicial{border:1px solid #8bd9e8;border-left:6px solid #00a6c7;background:linear-gradient(120deg,#f0fbfe 0%,#fff 68%)}
+.page-card.estilo-inicial summary{color:#087e9a}
+.page-card.estilo-contenido{border:1px solid #d9e5eb;border-left:6px solid #176b87;background:#fff}
+.page-card.estilo-contenido summary{color:#174e63}
+.page-card.estilo-final{border:1px solid #e7d99a;border-left:6px solid #d6a900;background:#fffdf4}
+.page-card.estilo-final summary{color:#806300}
+.page-card.estilo-proyecto{border:1px solid #c9d8ef;border-left:6px solid #5276ad;background:#f8faff}
+.page-card.estilo-proyecto summary{color:#355887}
+/* Estas clases también se aplican al HTML editorial final generado */
+.page-card.estilo-proyecto{border:1px solid #c9d8ef;border-left:6px solid #5276ad;background:#f8faff}
+.page-card.estilo-proyecto summary{color:#355887}
+.estilo-proyecto{--page-accent:#5276ad;--page-soft:#f1f5fc;--page-border:#c9d8ef}
+.estilo-inicial{--page-accent:#00a6c7;--page-soft:#eafaff;--page-border:#8bd9e8}
+.estilo-contenido{--page-accent:#176b87;--page-soft:#f4f9fb;--page-border:#c9dce4}
+.estilo-final{--page-accent:#176b87;--page-soft:#fff8d9;--page-border:#dfc65d}
+.estilo-inicial,.estilo-contenido,.estilo-final,.estilo-proyecto{color:#20242b;background:#fff}
+.estilo-inicial .numero-pagina,.estilo-contenido .numero-pagina,.estilo-final .numero-pagina{border:2px solid var(--page-accent);color:var(--page-accent);border-radius:5px}
+.estilo-inicial h1,.estilo-contenido h1,.estilo-final h1,.estilo-inicial h2,.estilo-contenido h2,.estilo-final h2{color:var(--page-accent)}
+.estilo-inicial .subtitulo::before,.estilo-contenido .subtitulo::before,.estilo-final .subtitulo::before{content:"";display:inline-block;width:8px;height:8px;background:var(--page-accent);margin-right:8px}
+.estilo-inicial .nos-hacemos-preguntas{background:var(--page-soft);border:1px solid var(--page-border);border-radius:12px;padding:14px}
+.estilo-contenido .clave{border-left:3px solid var(--page-accent);padding:9px 12px;background:var(--page-soft)}
+.estilo-final .actividad{background:#fff8d9;border:1px solid var(--page-border);border-radius:10px;padding:12px;margin:10px 0}
+
+/* Apertura MARCOS: imagen protagonista y columna editorial central. */
+.preview-sheet.layout-opening-central { display:flex; flex-direction:column; align-items:center; gap:7px; padding:10px 13px; }
+.preview-sheet.layout-opening-central .pv-head { width:100%; }
+.preview-sheet.layout-opening-central .pv-opening-image { width:100%; height:112px; border-radius:2px; background:linear-gradient(135deg,#d8d8d4,#f0eee9 48%,#c9c7c0); border:1px solid #d5d2ca; }
+.preview-sheet.layout-opening-central .pv-opening-column { width:76%; display:flex; flex-direction:column; gap:6px; padding:2px 0 5px; }
+.preview-sheet.layout-opening-central .pv-opening-column .pv-line { height:5px; background:#d8d8d8; border-radius:2px; }
+.preview-sheet.layout-opening-central .pv-opening-column .pv-line.mid { width:82%; }
+.preview-sheet.layout-opening-central .pv-opening-column .pv-line.short { width:58%; }
+.preview-sheet.layout-opening-central .pv-opening-diagram { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; height:37px; margin:2px 0; }
+.preview-sheet.layout-opening-central .pv-opening-diagram i { display:block; background:#f8e8d9; border:1px solid #e8c8ac; border-radius:2px; }
+
+/* Bloques de actividad: pueden ocupar una columna o el ancho editorial completo. */
+.actividad-bloque{background:var(--actividad-fondo,#fff8d9);border:1.5px solid var(--actividad-borde,#8bd9e8);border-radius:12px;padding:14px 16px;margin:14px 0;color:#20242b}
+.actividad-bloque .actividad-titulo{font-weight:800;color:var(--actividad-acento,#087e9a);margin:0 0 8px}
+.actividad-ancho-completo{grid-column:1/-1;width:100%;}
+.actividad-lateral{width:100%;max-width:100%;}
+.actividad-franja-inferior{grid-column:1/-1;width:100%;margin-top:18px;}
+.actividad-integrada{display:inline-block;max-width:100%;vertical-align:top;}
+.reference-preview{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
+.reference-preview canvas,.reference-preview img{max-width:180px;max-height:220px;object-fit:contain;border:1px solid #d0d5dd;border-radius:8px;background:#fff}
+.palette-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #d0d5dd;border-radius:20px;padding:4px 8px;margin:3px;font-size:12px;background:#fff}
+.palette-chip i{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid #bbb}
+
+
+@page{size:letter portrait;margin:0.55in}
+@media print{body{background:#fff}.page-sample{width:8.5in;max-width:none;aspect-ratio:8.5/11;box-shadow:none;border:0;margin:0 auto}}
+
+/* Vista esquemática dinámica de la maquetación por página */
+.page-layout-preview{margin:14px 0 18px;padding:13px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;display:grid;grid-template-columns:minmax(120px,180px) 1fr;gap:14px;align-items:center}
+.page-layout-preview .preview-sheet{width:100%;max-width:158px;aspect-ratio:8.5/11;background:#fff;border:1px solid #aeb8c4;border-radius:4px;box-shadow:0 3px 9px #0f172a12;padding:8px;display:flex;flex-direction:column;gap:5px;overflow:hidden;margin:auto}
+.preview-sheet .pv-head{height:9%;border-bottom:3px solid var(--pv-accent,#1683a5);display:flex;align-items:center;gap:5px}
+.preview-sheet .pv-num{width:16px;height:16px;border:2px solid var(--pv-accent,#1683a5);border-radius:2px}
+.preview-sheet .pv-title{height:5px;width:60%;background:#303844;border-radius:3px}
+.preview-sheet .pv-body{flex:1;min-height:0;display:flex;gap:5px}
+.preview-sheet .pv-main{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.preview-sheet .pv-side{width:30%;display:flex;flex-direction:column;gap:4px}
+.preview-sheet .pv-line{height:4px;background:#d8dee7;border-radius:3px}
+.preview-sheet .pv-line.short{width:66%}
+.preview-sheet .pv-line.mid{width:84%}
+.preview-sheet .pv-photo{height:28%;min-height:17px;background:linear-gradient(135deg,#dbeafe,#cbd5e1);border:1px solid #b7c5d6;border-radius:2px}
+.preview-sheet .pv-box{height:22%;min-height:15px;background:var(--pv-soft,#eaf4f8);border:1px solid var(--pv-accent,#1683a5);border-radius:4px}
+.preview-sheet .pv-footer{height:16%;background:#fff5d9;border:1px solid #e5c66a;border-radius:4px}
+.preview-sheet.layout-full .pv-body{display:flex;flex-direction:column}
+.preview-sheet.layout-full .pv-side{display:none}
+.preview-sheet.layout-full .pv-main{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+.preview-sheet.layout-full .pv-footer{height:22%}
+.preview-sheet.layout-image .pv-body{display:flex;flex-direction:column}
+.preview-sheet.layout-image .pv-side{width:100%;height:28%;display:block}
+.preview-sheet.layout-image .pv-side .pv-photo{height:100%}
+.preview-sheet.layout-image .pv-main{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+.preview-sheet.layout-steps .pv-body{display:flex;flex-direction:column}
+.preview-sheet.layout-steps .pv-side{width:100%;height:22%;display:flex;flex-direction:row}
+.preview-sheet.layout-steps .pv-side .pv-photo{flex:1;height:100%}
+.preview-sheet.layout-steps .pv-main{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+.preview-sheet.layout-diagram .pv-body{display:flex;flex-direction:column}
+.preview-sheet.layout-diagram .pv-side{width:100%;height:38%;display:block}
+.preview-sheet.layout-diagram .pv-side .pv-photo{height:100%;background:repeating-linear-gradient(0deg,#e8eef5 0 6px,#fff 6px 10px)}
+.preview-sheet.layout-modules .pv-body{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.preview-sheet.layout-modules .pv-side{width:auto}
+.preview-sheet.layout-modules .pv-main{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+.preview-sheet.layout-project .pv-body{display:flex;flex-direction:column}
+.preview-sheet.layout-project .pv-side{width:100%;height:30%;display:flex;flex-direction:row}
+.preview-sheet.layout-project .pv-side .pv-photo{flex:1;height:100%}
+.preview-sheet.layout-project .pv-main{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+.page-layout-preview .preview-copy{font-size:12px;color:#475569;line-height:1.45}
+.page-layout-preview .preview-copy strong{display:block;color:#1e293b;font-size:13px;margin-bottom:4px}
+.page-layout-preview .preview-copy span{display:block;margin-top:4px}
+@media(max-width:620px){.page-layout-preview{grid-template-columns:112px 1fr;gap:10px}.page-layout-preview .preview-sheet{max-width:112px}}
+
+
+.font-upload-panel{grid-column:1/-1;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:14px;margin-top:4px}
+.font-upload-panel .font-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+.font-upload-panel input[type=file]{width:100%;padding:9px;border:1px dashed #94a3b8;border-radius:8px;background:#fff}
+.font-sample{margin-top:12px;padding:13px 15px;background:#fff;border:1px solid #dbe3ec;border-radius:9px}
+.font-sample .sample-title{font-size:21px;font-weight:700;margin-bottom:5px;color:#1e293b}
+.font-sample .sample-body{font-size:14px;line-height:1.5;color:#475569}
+.font-status{font-size:12px;color:#475569;margin-top:7px}
+@media(max-width:640px){.font-upload-panel .font-controls{grid-template-columns:1fr}}
+
+
+/* V21: ajustes avanzados automáticos para conservar el resultado MARCOS sin decisiones innecesarias. */
+.automatic-settings{display:none!important}
+.page-card [data-field="activityLayout"],
+.page-card .field:has([data-field="activityLayout"]),
+.page-card [data-field="editorialStyle"],
+.page-card [data-field="composition"],
+.page-card .page-layout-preview,
+.page-card [data-field="visual"],
+.page-card .field:has([data-field="editorialStyle"]),
+.page-card .field:has([data-field="composition"]),
+.page-card .field:has([data-field="visual"]),
+.page-card .field:has([data-section]){display:none!important}
+.page-card .page-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:600px){.page-card .page-fields{grid-template-columns:1fr}}
+.auto-design-note{padding:13px 15px;border:1px solid #f1c6a9;border-left:4px solid #e87524;border-radius:10px;background:#fffaf6;color:#4b5563;font-size:13px;margin:12px 0 18px}
+.auto-design-note strong{color:#9d3a12}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<style id="selector-return-style">
+#selectorReturnV{position:fixed;right:18px;bottom:18px;z-index:99999;display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;background:#20242b;color:#fff;text-decoration:none;font:700 13px/1.2 Arial,sans-serif;box-shadow:0 5px 0 #101318,0 8px 18px #0003}
+#selectorReturnV:hover{transform:translateY(-2px);background:#343b46}
+@media print{#selectorReturnV{display:none!important}}
+</style>
+
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#20242b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="./pwa-icons/icon-192.png">
+</head>
+<body>
+
+<style>
+#marcos-savebar{position:sticky;top:0;z-index:9998;background:#fff;border-bottom:1px solid #e4e7ec;box-shadow:0 4px 16px #10182812;padding:9px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#marcos-savebar .ms-brand{font-weight:900;color:#b84d17;margin-right:auto}
+#marcos-savebar button,#marcos-savebar select,#marcos-savebar input{font:inherit;font-size:13px;border:1px solid #d0d5dd;border-radius:8px;padding:8px 10px;background:#fff;color:#20242b}
+#marcos-savebar button{cursor:pointer;font-weight:700}
+#marcos-savebar .primary{background:#e85b22;color:#fff;border-color:#e85b22}
+#marcos-savebar .status{font-size:12px;color:#667085;min-width:130px}
+#marcos-project-modal{display:none;position:fixed;inset:0;background:#10182888;z-index:10000;align-items:center;justify-content:center;padding:16px}
+#marcos-project-modal.open{display:flex}
+#marcos-project-modal .box{background:#fff;border-radius:14px;padding:20px;width:min(560px,100%);max-height:85vh;overflow:auto;box-shadow:0 20px 60px #0003}
+#marcos-project-modal h2{margin:0 0 12px}
+#marcos-project-modal .project-row{display:flex;gap:8px;align-items:center;border-top:1px solid #eee;padding:10px 0}
+#marcos-project-modal .project-row span{flex:1;min-width:0;overflow-wrap:anywhere}
+#marcos-project-modal button{border:1px solid #d0d5dd;border-radius:7px;padding:7px 10px;background:white;cursor:pointer}
+#marcos-project-modal .danger{color:#b42318}
+@media(max-width:650px){#marcos-savebar{position:relative}#marcos-savebar .status{width:100%}}
+</style>
+<div id="marcos-savebar" aria-label="Gestión de proyectos">
+ <span class="ms-brand">MARCOS · PROYECTOS</span>
+ <input id="ms-project-name" type="text" placeholder="Nombre del proyecto" aria-label="Nombre del proyecto" style="width:190px">
+ <button class="primary" id="ms-save">Guardar proyecto</button>
+ <button id="ms-open">Mis proyectos</button>
+ <button id="ms-export">Exportar proyecto</button>
+ <button id="ms-config-export">Exportar configuración</button>
+ <button id="ms-import">Importar archivo</button>
+ <input id="ms-file" type="file" accept=".json,application/json" hidden>
+ <span class="status" id="ms-status" role="status">Guardado automático activo</span>
+</div>
+<div id="marcos-project-modal" role="dialog" aria-modal="true" aria-label="Mis proyectos">
+ <div class="box"><h2>Mis proyectos guardados</h2><p style="color:#667085;font-size:13px">Se almacenan en este navegador y dispositivo. Exporta copias JSON para trasladarlos o respaldarlos.</p>
+ <div id="ms-project-list"></div><p style="text-align:right"><button id="ms-close">Cerrar</button></p></div>
+</div>
+<script>
+(()=>{
+ const DB='marcos_editorial_db', STORE='projects', DRAFT='marcos_editorial_draft_v2';
+ const $=id=>document.getElementById(id);
+ const status=t=>{const e=$('ms-status');if(e)e.textContent=t};
+ let dbPromise;
+ function db(){
+  if(dbPromise)return dbPromise;
+  dbPromise=new Promise((resolve,reject)=>{
+   if(!('indexedDB'in window)){reject(Error('IndexedDB no disponible'));return}
+   const req=indexedDB.open(DB,1);
+   req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE,{keyPath:'id'})};
+   req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+  });return dbPromise;
+ }
+ const tx=(mode,fn)=>db().then(d=>new Promise((res,rej)=>{const t=d.transaction(STORE,mode),s=t.objectStore(STORE);let r=fn(s);t.oncomplete=()=>res(r?.result);t.onerror=()=>rej(t.error)}));
+ const all=()=>tx('readonly',s=>s.getAll());
+ const put=p=>tx('readwrite',s=>s.put(p));
+ const del=id=>tx('readwrite',s=>s.delete(id));
+ function controls(){
+  return [...document.querySelectorAll('input,textarea,select,[contenteditable="true"]')]
+   .filter(e=>!e.closest('#marcos-savebar,#marcos-project-modal')&&e.type!=='file'&&e.type!=='button'&&e.type!=='submit'&&e.type!=='reset')
+   .map((e,i)=>({key:e.id?'#'+e.id:(e.name?'[name="'+CSS.escape(e.name)+'"]':'@'+i),tag:e.tagName,type:e.type||'',value:e.type==='checkbox'||e.type==='radio'?e.checked:e.value??e.innerHTML, checked:e.checked??null}));
+ }
+ function capture(){return {schema:'MARCOS-PROJECT-1',version:1,app:document.title,updatedAt:new Date().toISOString(),controls:controls()};}
+ function apply(data){
+  if(!data||!Array.isArray(data.controls))throw Error('El archivo no contiene un proyecto MARCOS válido.');
+  const els=[...document.querySelectorAll('input,textarea,select,[contenteditable="true"]')].filter(e=>!e.closest('#marcos-savebar,#marcos-project-modal')&&e.type!=='file'&&e.type!=='button'&&e.type!=='submit'&&e.type!=='reset');
+  data.controls.forEach((v,i)=>{
+   let e=null;if(v.key?.startsWith('#'))e=document.getElementById(v.key.slice(1));
+   else if(v.key?.startsWith('[name=')){try{e=document.querySelector(v.key)}catch{}}
+   else e=els[i];
+   if(!e)return;
+   if(e.type==='checkbox'||e.type==='radio')e.checked=!!v.value;else if(e.isContentEditable)e.innerHTML=v.value??'';else e.value=v.value??'';
+   e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+ }
+ function download(obj,name){
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1200);
+ }
+ function slug(s){return (s||'proyecto').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)||'proyecto'}
+ let currentId=null;
+ async function save(){
+  const name=$('ms-project-name').value.trim()||'Proyecto sin título';
+  const id=currentId||('p-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));
+  const p={...capture(),id,name,versionLabel:document.title};
+  try{await put(p);currentId=id;localStorage.setItem(DRAFT,JSON.stringify(p));status('Guardado: '+new Date().toLocaleTimeString());}
+  catch(e){try{localStorage.setItem(DRAFT,JSON.stringify(p));status('Guardado local básico (almacenamiento limitado)');}catch{status('No se pudo guardar. Exporta una copia JSON.');}}
+ }
+ let timer;function schedule(){clearTimeout(timer);timer=setTimeout(()=>{try{localStorage.setItem(DRAFT,JSON.stringify(capture()));status('Borrador guardado automáticamente');}catch{status('Almacenamiento lleno: exporta una copia JSON.')}},900)}
+ document.addEventListener('input',e=>{if(!e.target.closest('#marcos-savebar,#marcos-project-modal'))schedule()});
+ document.addEventListener('change',e=>{if(!e.target.closest('#marcos-savebar,#marcos-project-modal'))schedule()});
+ $('ms-save').onclick=save;
+ $('ms-export').onclick=()=>{const p=capture();p.name=$('ms-project-name').value.trim()||'Proyecto';download(p,slug(p.name)+'.marcos.json');status('Proyecto exportado');};
+ $('ms-config-export').onclick=()=>{const p=capture();download({schema:'MARCOS-CONFIG-1',exportedAt:new Date().toISOString(),app:document.title,configuration:p.controls},'configuracion-marcos.json');status('Configuración exportada');};
+ $('ms-import').onclick=()=>$('ms-file').click();
+ $('ms-file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());apply(d.schema==='MARCOS-CONFIG-1'?{controls:d.configuration}:d);if(d.name)$('ms-project-name').value=d.name;currentId=null;await save();status('Importación completada');}catch(err){alert('No se pudo importar: '+err.message)}e.target.value='';};
+ $('ms-open').onclick=async()=>{const list=$('ms-project-list');list.innerHTML='Cargando…';$('marcos-project-modal').classList.add('open');try{const ps=await all();list.innerHTML='';if(!ps.length){list.textContent='Todavía no hay proyectos guardados.';return}ps.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));ps.forEach(p=>{const row=document.createElement('div');row.className='project-row';const label=document.createElement('span');label.textContent=p.name+' · '+new Date(p.updatedAt).toLocaleString();const load=document.createElement('button');load.textContent='Abrir';load.onclick=()=>{if(confirm('¿Cargar este proyecto? Se reemplazarán los campos actuales.')){apply(p);$('ms-project-name').value=p.name;currentId=p.id;$('marcos-project-modal').classList.remove('open');status('Proyecto cargado');}};const exp=document.createElement('button');exp.textContent='JSON';exp.onclick=()=>download(p,slug(p.name)+'.marcos.json');const remove=document.createElement('button');remove.textContent='Eliminar';remove.className='danger';remove.onclick=async()=>{if(confirm('¿Eliminar '+p.name+'?')){await del(p.id);row.remove();}};row.append(label,load,exp,remove);list.append(row)});}catch(e){list.textContent='No se pudo acceder al almacenamiento: '+e.message}};
+ $('ms-close').onclick=()=>$('marcos-project-modal').classList.remove('open');
+ $('marcos-project-modal').addEventListener('click',e=>{if(e.target.id==='marcos-project-modal')e.currentTarget.classList.remove('open')});
+ // Recover the last in-progress draft if this page has no values yet.
+ try{const d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d&&d.controls?.length&&confirm('Se encontró un borrador guardado en este dispositivo. ¿Deseas recuperarlo?')){apply(d);$('ms-project-name').value=d.name||'';currentId=d.id||null;status('Borrador recuperado');}}catch{}
+ // Register service worker from both version pages; save a draft before leaving.
+ window.addEventListener('beforeunload',()=>{try{localStorage.setItem(DRAFT,JSON.stringify(capture()))}catch{}});
+})();
+</script>
+
+<header>
+  <div class="eyebrow">Versión sencilla · configuración editorial automática</div>
+  <h1>Diseñador editorial</h1>
+  <p>Crea libros didácticos con el mismo resultado editorial MARCOS. Completa los datos esenciales y deja que el sistema aplique automáticamente el diseño, las secciones y las composiciones.</p>
+</header>
+<div class="wrap">
+<nav aria-label="Pasos del generador">
+  <div class="step active" data-step="0"><b>1</b> Datos del libro</div>
+  <div class="step" data-step="1"><b>2</b> Páginas y temario</div>
+  <div class="step" data-step="2"><b>3</b> Generar libro</div>
+  <div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px">
+    <button class="btn secondary" style="width:100%;margin-bottom:8px" id="saveBtn">Guardar configuración</button>
+    <button class="btn secondary" style="width:100%;margin-bottom:8px" id="loadBtn">Cargar guardada</button>
+    <button class="btn secondary" style="width:100%" id="resetBtn">Nuevo proyecto</button>
+  </div>
+</nav>
+<main>
+<div class="voice-bar" role="region" aria-label="Herramientas de voz">
+ <button type="button" id="readSectionBtn">🔊 Leer sección actual</button>
+ <button type="button" id="readAllBtn">▶ Leer todo</button>
+ <button type="button" id="pauseVoiceBtn">Ⅱ Pausar</button>
+ <button type="button" id="stopVoiceBtn">■ Detener</button>
+ <button type="button" id="dictateBtn">🎙 Dictar en campo activo</button>
+ <span class="voice-status" id="voiceStatus" aria-live="polite">Lectura y dictado por voz del navegador. Usa Chrome o Edge y permite el micrófono.</span>
+</div>
+<section class="panel page-step" data-page="0">
+  <h2>1. Cuéntame qué libro quieres crear</h2><p class="intro">Responde con palabras sencillas. Si todavía no sabes algo, déjalo sin completar y el prompt pedirá propuestas.</p>
+  <div class="grid">
+    <div class="field"><label for="book">Título o nombre del módulo</label><input id="book" placeholder="Ej. Técnicas básicas de panadería"></div>
+    <div class="field"><label for="subject">Área o especialidad</label><input id="subject" value="Gastronomía" placeholder="Ej. Robótica, Gastronomía"></div>
+    <div class="field"><label for="level">Nivel educativo</label><select id="level"><option>Técnico básico</option><option selected>Técnico medio</option><option>Técnico superior</option><option>Secundaria</option><option>Otro / por definir</option></select></div>
+    <div class="field"><label for="audience">¿Para quién está dirigido?</label><input id="audience" placeholder="Ej. Estudiantes de formación técnica"></div>
+    <div class="field full"><label for="purpose">¿Qué quieres que aprendan los estudiantes?</label><textarea id="purpose" placeholder="Ej. Identificar ingredientes, aplicar técnicas de amasado y elaborar panes con calidad e higiene."></textarea></div>
+    <div class="field full"><label for="context">Contexto o enfoque especial (opcional)</label><textarea id="context" placeholder="Ej. Taller escolar, productos locales, emprendimiento, cocina boliviana..."></textarea></div>
+  </div>
+  <div class="notice">Consejo: escribe el tema como se lo explicarías a otra persona. El generador lo convertirá en instrucciones editoriales.</div>
+</section>
+
+<section class="panel page-step hidden automatic-settings" data-page="1" aria-hidden="true">
+  <h2>2. Estilo editorial MARCOS</h2><p class="intro">MARCOS queda establecido como estilo predeterminado. Puedes ajustar detalles, pero la estructura visual y didáctica mantendrá una identidad coherente.</p>
+  <div class="cards" id="layoutChoices">
+    <button class="choice" data-value="Diseño editorial asimétrico de dos columnas con banda lateral alternada según la numeración real: en páginas pares la banda lateral va a la izquierda y la teoría amplia a la derecha; en páginas impares la banda lateral va a la derecha y la teoría amplia a la izquierda. La banda lateral es más estrecha y contiene recuadros, fotografías y pies de imagen.">
+      <div class="mini"><div class="col"><div class="bar"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div></div><div class="col"><div class="photo"></div><div class="lines"></div><div class="lines"></div></div></div>
+      <strong>Columnas asimétricas alternadas</strong><small>Pares: banda izquierda. Impares: banda derecha.</small>
+    </button>
+    <button class="choice" data-value="Una columna editorial con imágenes intercaladas y bloques de apoyo.">
+      <div class="mini" style="display:block"><div class="bar"></div><div class="lines"></div><div class="lines"></div><div class="photo" style="height:27px"></div><div class="lines"></div></div>
+      <strong>Una columna editorial</strong><small>Lectura continua y fotografías intercaladas.</small>
+    </button>
+    <button class="choice selected" data-value="Diseño modular editorial inspirado en MARCOS: jerarquía clara, columnas asimétricas cuando convenga, imágenes documentales, recuadros de apoyo discretos y actividades diferenciadas.">
+      <div class="mini" style="display:grid;grid-template-columns:1fr 1fr"><div class="col"><div class="photo"></div><div class="lines"></div></div><div class="col"><div class="bar"></div><div class="lines"></div></div><div class="col"><div class="lines"></div></div><div class="col"><div class="photo" style="height:25px"></div></div></div>
+      <strong>Bloques modulares</strong><small>Secciones visuales independientes.</small>
+    </button>
+  </div>
+  <div class="notice"><b>Regla editorial MARCOS:</b> fondo blanco dominante, títulos y numeración en naranja, texto negro/gris, recuadros suaves de apoyo y fotografías documentales con pies breves. <b>Regla de páginas enfrentadas:</b> en las páginas de contenido, la banda lateral cambia de lado según el número impreso: páginas pares = banda izquierda y teoría a la derecha; páginas impares = banda derecha y teoría a la izquierda. La columna teórica siempre será más ancha. Esta regla se aplica a la numeración real, no al orden de creación.</div>
+  <div class="grid" style="margin-top:18px">
+    <div class="field"><label for="fontTitle">Tipografía de títulos</label><select id="fontTitle"><option>Sans serif gruesa y moderna</option><option>Sans serif geométrica</option><option>Serif editorial</option></select></div>
+    <div class="field"><label for="fontBody">Tipografía del texto</label><select id="fontBody"><option selected>Serif legible (Georgia o similar)</option><option>Sans serif legible</option><option>Combinación editorial</option></select></div>
+    
+    <div class="font-upload-panel">
+      <h3 style="margin:0 0 6px">Agregar una fuente tipográfica</h3>
+      <p class="hint">Sube un archivo de fuente para probar su apariencia en esta configuración. Formatos admitidos: TTF, OTF, WOFF y WOFF2.</p>
+      <div class="font-controls">
+        <div class="field">
+          <label for="customFontFile">Subir archivo de fuente</label>
+          <input id="customFontFile" type="file" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2">
+        </div>
+        <div class="field">
+          <label for="customFontTarget">Aplicar la fuente a</label>
+          <select id="customFontTarget">
+            <option value="both">Títulos y texto</option>
+            <option value="titles">Solo títulos</option>
+            <option value="body">Solo texto</option>
+          </select>
+        </div>
+      </div>
+      <div class="font-sample" id="fontSample">
+        <div class="sample-title">Así se verá el título de tu libro</div>
+        <div class="sample-body">Este texto permite comprobar la legibilidad de la fuente elegida para los contenidos, explicaciones y actividades.</div>
+      </div>
+      <div class="font-status" id="fontStatus">Todavía no has cargado una fuente. Se utilizarán las tipografías seleccionadas arriba.</div>
+      <p class="hint">Nota: la fuente se previsualiza en este HTML y su nombre se incorpora al prompt. Para que ChatGPT pueda utilizar exactamente esa fuente al generar una página como imagen, adjunta también el archivo de fuente en el chat. El HTML no lo envía automáticamente.</p>
+    </div>
+
+    <div class="field"><label for="accent">Color principal</label><select id="accent"><option value="#E87524" selected>Naranja MARCOS</option><option value="#00A6C7">Azul cian</option><option value="#176B87">Azul petróleo</option><option value="#287A52">Verde gastronómico</option><option value="#6B5BB5">Violeta</option><option value="#20242B">Negro / gris carbón</option></select></div>
+    <div class="field"><label for="activityColor">Color de actividades</label><select id="activityColor"><option value="#FFF1D8" selected>Crema claro MARCOS</option><option value="#E8F5FA">Celeste claro</option><option value="#EAF4EC">Verde suave</option><option value="#F2EDFA">Lavanda suave</option><option value="#F2F4F7">Gris claro</option></select></div>
+    <div class="field"><label for="corners">Forma de recuadros</label><select id="corners"><option>Esquinas ligeramente redondeadas</option><option>Esquinas rectas</option><option>Redondeadas y suaves</option></select></div>
+    <div class="field"><label for="density">Densidad visual</label><select id="density"><option>Minimalista, poco texto por página</option><option selected>Equilibrada, con espacios en blanco</option><option>Contenido amplio, estilo libro técnico</option></select></div>
+  </div>
+  <div class="field" style="margin-top:14px;max-width:260px"><label for="previewPage">Probar distribución con número de página</label><input type="number" id="previewPage" min="1" value="82"></div>
+  <div class="preview">
+    <h3>Vista previa del estilo</h3>
+    <div class="page-sample" id="samplePage">
+      <div class="sample-head"><span class="sample-num">1</span><span>Nombre de la unidad</span></div>
+      <div class="sample-body" id="sampleBody"><div class="sample-side"><div class="sample-img">Fotografía / recuadro</div><div class="sample-block"></div><div class="sample-block"></div><div class="sample-block"></div></div><div class="sample-main"><b>Desarrollo teórico (columna amplia)</b><div class="sample-block"></div><div class="sample-block"></div><div class="sample-block"></div><div class="sample-block"></div><div class="sample-block"></div></div></div>
+      <div class="sample-callout">ACTIVIDADES · Pregunta para aplicar lo aprendido.</div>
+    </div>
+    <div class="hint" id="parityHint">Vista previa de página par: banda lateral a la izquierda y teoría a la derecha.</div>
+  </div>
+  <div class="field" style="margin-top:14px"><label for="reference">Describe una página de referencia o adjunta una imagen en ChatGPT por separado</label><textarea id="reference" placeholder="Ej. Como la página de referencia: número grande en recuadro, título negro, línea naranja, texto serif y foto rectangular con pie explicativo."></textarea></div>
+  <div class="field full" style="margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfd">
+    <label for="styleReferenceFile">Subir PDF o imagen para tomar su estilo editorial</label>
+    <input type="file" id="styleReferenceFile" accept="application/pdf,.pdf,image/png,image/jpeg,image/webp">
+    <div class="hint">Puedes subir una página de un libro en PDF o una imagen. El HTML observará la primera página del PDF o la imagen para identificar colores dominantes y rasgos visuales. No extrae automáticamente todo el diseño ni sustituye la revisión editorial.</div>
+    <div id="styleReferenceStatus" class="notice">Todavía no se ha cargado una referencia visual.</div>
+    <div id="styleReferencePreview" class="reference-preview"></div>
+    <label for="styleReferenceNotes">Descripción del estilo detectado (editable)</label>
+    <textarea id="styleReferenceNotes" rows="4" placeholder="Aquí se registrarán los colores aproximados y las características visuales detectadas. Puedes corregirlas."></textarea>
+  </div>
+</section>
+
+<section class="panel page-step hidden" data-page="2">
+  <h2>2. Organiza las páginas y el temario</h2><p class="intro">Indica la extensión del libro y distribuye sus contenidos. El diseño de cada tipo de página se aplicará automáticamente.</p><div class="auto-design-note"><strong>Diseño automático MARCOS:</strong> apertura con imagen protagonista y columna central; desarrollo con composición editorial equilibrada; actividades con ejercicios variados; proyecto con planificación y evidencias. Colores, tipografías, fotografías y secciones ya están configurados.</div>
+  <div class="grid">
+    <div class="field"><label for="introPages">Apertura de la unidad (inicial + introductoria)</label><input type="number" id="introPages" min="1" max="1" value="1" readonly><small class="hint">Una sola página que presenta, motiva y contextualiza la unidad.</small></div>
+    <div class="field"><label for="contentPages">Páginas de desarrollo</label><input type="number" id="contentPages" min="1" max="40" value="10"></div>
+    <div class="field"><label for="reviewPages">Páginas de actividades finales</label><input type="number" id="reviewPages" min="2" max="8" value="2"></div>
+    <div class="field"><label for="projectPages">Páginas de proyecto final</label><input type="number" id="projectPages" min="2" max="8" value="2"></div>
+    <div class="field"><label for="startPage">Número de página inicial</label><input type="number" id="startPage" min="1" value="1"></div>
+    <div class="field"><label for="pageSize">Formato de página</label><select id="pageSize"><option selected>Carta vertical</option><option>A4 vertical</option><option>Formato de libro personalizado</option></select></div>
+    <div class="field full"><label for="sequence">Temas que ya tienes definidos (opcional)</label><textarea id="sequence" placeholder="Escribe temas separados por líneas. Si no tienes temas, pide que proponga una secuencia coherente."></textarea></div>
+    <div class="field full">
+      <label for="pdfFile">PDF de referencia del contenido (opcional)</label>
+      <input type="file" id="pdfFile" accept="application/pdf,.pdf">
+      <div class="hint">El navegador extraerá el texto del PDF para incluirlo como fuente en los prompts. Si el PDF es escaneado como imagen, puede necesitar OCR y la extracción podría ser limitada.</div>
+      <div id="pdfStatus" class="notice">Todavía no se ha cargado ningún PDF.</div>
+      <label for="pdfExtract">Texto extraído del PDF (puedes revisarlo o corregirlo)</label>
+      <textarea id="pdfExtract" rows="7" placeholder="Aquí aparecerá el texto extraído del PDF."></textarea>
+    </div>
+  </div>
+  <div class="notice" id="pageTotal">Total estimado: 15 páginas.</div>
+  <div style="border-top:1px solid var(--line);margin-top:20px;padding-top:18px">
+    <h3>Plan individual de cada página</h3>
+    <p class="intro">Se crea una ficha por página. Si adjuntas un PDF, el prompt maestro pedirá organizar sus temas de forma progresiva. Puedes completar cada ficha manualmente o importar un Excel.</p>
+    <div class="notice">No todas las páginas deben llevar todos los recuadros. Puedes quitar secciones, pedir pocas actividades o dedicar una página principalmente a ejercicios.</div>
+    <div class="notice" style="border-left:4px solid #00A6C7">
+      <b>Secuencia editorial predeterminada:</b> 1 página inicial-introductoria; 9–12 páginas de desarrollo;
+      2 páginas de actividades finales; 2 páginas de proyecto integrador. Puedes ajustar la cantidad,
+      pero el esquema debe conservar una progresión lógica y evitar contenidos repetidos.
+      Todas las páginas utilizan la identidad MARCOS: naranja editorial, blanco dominante, texto negro/gris y fondos suaves de apoyo. Cada tipo de página conserva una composición propia, pero comparte la misma jerarquía visual.
+    </div>
+    <div class="actions" style="justify-content:flex-start;flex-wrap:wrap">
+      <button class="btn secondary" id="downloadExcelTemplate">Descargar plantilla Excel</button>
+      <button class="btn secondary" id="exportExcel">Exportar planificación a Excel</button>
+      <label class="btn secondary" for="excelImport">Subir Excel y rellenar páginas</label>
+      <input type="file" id="excelImport" accept=".xlsx,.xls,.csv" class="hidden">
+    </div>
+    <div id="excelStatus" class="hint">El Excel usa columnas esenciales y nombres sencillos. Completa una fila por página; no necesitas modificar fórmulas ni formatos.</div>
+    <div id="pagePlanner" style="display:grid;gap:12px"></div>
+<div class="topic-manager" id="topicManager">
+  <div class="topic-head">
+    <div><h3>Mapa de títulos, contenidos y subtítulos</h3>
+    <p class="intro">Define los títulos principales de la unidad, los contenidos que desarrollarás y los subtítulos específicos. Puedes pedir propuestas de otros apartados y reorganizarlos antes de generar las páginas.</p></div>
+    <span class="topic-tag">Opcional</span>
+  </div>
+  <div class="topic-toolbar">
+    <button type="button" class="btn secondary btn-3d" id="addTopicBtn">＋ Añadir tema</button>
+    <button type="button" class="btn secondary btn-3d" id="topicAiBtn">✦ Ayuda IA para el temario</button>
+    <button type="button" class="btn secondary btn-3d download-action" id="topicExcelBtn">Descargar Excel de temario</button>
+    <label class="btn secondary btn-3d" for="topicExcelImport">Subir Excel</label>
+    <input id="topicExcelImport" type="file" accept=".xlsx,.xls,.csv" hidden>
+  </div>
+  <div class="topic-help">Estructura recomendada: título principal → contenido central → subtítulos específicos → apartados complementarios. No es obligatorio llenar todos los campos.</div>
+  <div id="topicRows" class="topic-rows"></div>
+  <div class="topic-footer">
+    <span id="topicCount">0 temas registrados</span>
+    <button type="button" class="btn secondary btn-3d copy-action" id="copyTopicPlan">Copiar temario</button>
+  </div>
+  <div class="topic-ai-result" id="topicAiResult" hidden>
+    <b>Consulta preparada para la IA</b>
+    <p>Se copiará una instrucción para proponer o mejorar temas y subcontenidos. Pégala en ChatGPT junto con el PDF del módulo.</p>
+    <textarea id="topicAiPrompt" rows="6" readonly></textarea>
+    <button type="button" class="btn btn-3d copy-action" id="copyTopicAiPrompt">COPIAR CONSULTA PARA IA</button>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<section class="panel page-step hidden automatic-settings" data-page="4" aria-hidden="true">
+  <h2>5. Selecciona las secciones del libro</h2><p class="intro">Marca los recursos que deseas utilizar. El asistente debe incorporarlos solo cuando tengan sentido para el tema.</p>
+  <div class="checks" id="components">
+    <label class="check"><input type="checkbox" value="SABER" checked><span><b>SABER</b><br>Conceptos y fundamentos.</span></label>
+    <label class="check"><input type="checkbox" value="SABER HACER" checked><span><b>SABER HACER</b><br>Procedimientos paso a paso.</span></label>
+    <label class="check"><input type="checkbox" value="SABER MÁS" checked><span><b>SABER MÁS</b><br>Curiosidades y ampliación.</span></label>
+    <label class="check"><input type="checkbox" value="PRESTA ATENCIÓN" checked><span><b>PRESTA ATENCIÓN</b><br>Seguridad y advertencias.</span></label>
+    <label class="check"><input type="checkbox" value="CLAVES" checked><span><b>CLAVES</b><br>Conceptos esenciales.</span></label>
+    <label class="check"><input type="checkbox" value="PASA A LA ACCIÓN" checked><span><b>PASA A LA ACCIÓN</b><br>Aplicación práctica.</span></label>
+    <label class="check"><input type="checkbox" value="ACTIVIDADES" checked><span><b>ACTIVIDADES</b><br>Preguntas y ejercicios.</span></label>
+    <label class="check"><input type="checkbox" value="GLOSARIO"><span><b>GLOSARIO</b><br>Vocabulario técnico.</span></label>
+    <label class="check"><input type="checkbox" value="TABLAS TÉCNICAS" checked><span><b>TABLAS TÉCNICAS</b><br>Datos y comparaciones.</span></label>
+    <label class="check"><input type="checkbox" value="MAPAS CONCEPTUALES" checked><span><b>MAPAS CONCEPTUALES</b><br>Relaciones visuales.</span></label>
+    <label class="check"><input type="checkbox" value="AUTOEVALUACIÓN" checked><span><b>AUTOEVALUACIÓN</b><br>Reflexión sobre el aprendizaje.</span></label>
+    <label class="check"><input type="checkbox" value="PROYECTO INTEGRADOR" checked><span><b>PROYECTO INTEGRADOR</b><br>Aplicación de competencias.</span></label>
+  </div>
+  <div class="field" style="margin-top:16px"><label for="imagePolicy">Preferencia de imágenes</label><select id="imagePolicy"><option>Fotografías reales y técnicas, con pies explicativos</option><option>Fotografías e ilustraciones combinadas</option><option>Ilustraciones didácticas y diagramas</option><option>Usar imágenes solo cuando aporten información</option></select></div>
+  <div class="field" style="margin-top:12px"><label for="activityStyle">Tipo de actividades preferidas</label><textarea id="activityStyle" placeholder="Ej. análisis de casos, resolución de problemas, prácticas de taller, comparación, investigación y reflexión."></textarea></div>
+</section>
+
+<section class="panel page-step hidden" data-page="5">
+  <h2>4. Revisa y genera el libro</h2><p class="intro">El sistema comprueba los datos básicos y prepara un prompt maestro reutilizable.</p>
+  <div id="checksResult"></div>
+  <div class="actions" style="justify-content:flex-start;flex-wrap:wrap">
+    <button class="btn dark" id="generateBtn">Generar prompt</button>
+    <button class="btn secondary" id="copyBtn">Copiar prompt</button>
+    <button class="btn secondary" id="downloadBtn">Descargar .txt</button>
+  </div>
+  <textarea id="output" class="output" placeholder="Tu prompt maestro aparecerá aquí." spellcheck="false"></textarea>
+  <div class="preview" style="margin-top:18px">
+    <h3>Prompts individuales por página</h3>
+    <p class="intro">Cada página tendrá su propio prompt, sin imponer todas las secciones en todas las páginas.</p>
+    <div class="actions" style="justify-content:flex-start;flex-wrap:wrap">
+      <button class="btn dark" id="generatePagesBtn">Generar prompts de todas las páginas</button>
+      <button class="btn secondary" id="copyPagesBtn">Copiar todos los prompts</button>
+      <button class="btn secondary" id="downloadPagesBtn">Descargar prompts por página</button>
+    </div>
+    <div id="pagePrompts" style="display:grid;gap:12px"></div>
+  </div>
+  <div class="actions" style="justify-content:flex-start;flex-wrap:wrap">
+    <button class="btn secondary" id="exportBtn">Exportar configuración JSON</button>
+    <label class="btn secondary" for="importFile">Importar configuración JSON</label><input id="importFile" type="file" accept=".json,application/json" class="hidden">
+  </div>
+  <div class="notice">Para reutilizarlo en otra unidad, guarda la configuración, cambia el nombre y los contenidos del módulo y conserva el mismo estilo visual. Puedes copiar el prompt completo a ChatGPT.</div>
+</section>
+
+<div class="actions">
+  <button class="btn secondary" id="prevBtn" disabled>← Anterior</button>
+  <button class="btn primary" id="nextBtn">Siguiente →</button>
+</div>
+<div class="footer-note">Versión sencilla V21 · El diseño MARCOS y los componentes pedagógicos se aplican automáticamente. Tus datos se guardan en este navegador solo cuando eliges «Guardar configuración».</div>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let current=0, layout="Diseño modular editorial inspirado en MARCOS: jerarquía clara, columnas asimétricas cuando convenga, imágenes documentales, recuadros de apoyo discretos y actividades diferenciadas.";
+let customFont={name:"",fileName:"",dataUrl:"",target:"both"};
+function applyFontPreview(){
+ const sample=$("fontSample"); if(!sample)return;
+ const title=sample.querySelector(".sample-title"),body=sample.querySelector(".sample-body");
+ const active=!!customFont.dataUrl, family=active?'"'+customFont.name+'", serif':"";
+ title.style.fontFamily=active&&(customFont.target==="titles"||customFont.target==="both")?family:"";
+ body.style.fontFamily=active&&(customFont.target==="body"||customFont.target==="both")?family:"";
+ $("fontStatus").textContent=active
+  ?`Fuente cargada: ${customFont.fileName}. Aplicación: ${customFont.target==="both"?"títulos y texto":customFont.target==="titles"?"solo títulos":"solo texto"}.`
+  :"Todavía no has cargado una fuente. Se utilizarán las tipografías seleccionadas arriba.";
+}
+$("customFontFile")?.addEventListener("change",e=>{
+ const file=e.target.files?.[0]; if(!file)return;
+ const ext=(file.name.split(".").pop()||"").toLowerCase();
+ if(!["ttf","otf","woff","woff2"].includes(ext)){alert("Selecciona una fuente TTF, OTF, WOFF o WOFF2.");e.target.value="";return;}
+ const reader=new FileReader();
+ reader.onload=()=>{
+  const safeName="FuentePersonalizada"+Date.now();
+  customFont={name:safeName,fileName:file.name,dataUrl:String(reader.result||""),target:$("customFontTarget").value};
+  let style=document.getElementById("customFontFace");
+  if(!style){style=document.createElement("style");style.id="customFontFace";document.head.appendChild(style);}
+  const format=ext==="ttf"?"truetype":ext==="otf"?"opentype":ext;
+  style.textContent=`@font-face{font-family:"${safeName}";src:url("${customFont.dataUrl}") format("${format}");font-display:swap}`;
+  applyFontPreview();
+ };
+ reader.onerror=()=>alert("No se pudo leer el archivo de fuente.");
+ reader.readAsDataURL(file);
+});
+$("customFontTarget")?.addEventListener("change",e=>{customFont.target=e.target.value;applyFontPreview();});
+
+const pages=[0,2,5].map(n=>document.querySelector('.page-step[data-page="'+n+'"]')), steps=[...document.querySelectorAll(".step")];
+function show(n){current=Math.max(0,Math.min(2,n));pages.forEach((p,i)=>p.classList.toggle("hidden",i!==current));steps.forEach((s,i)=>{s.classList.toggle("active",i===current);s.classList.toggle("done",i<current)});$("prevBtn").disabled=current===0;$("nextBtn").textContent=current===2?"Volver al inicio":"Siguiente →";if(current===2)review();window.scrollTo({top:0,behavior:"smooth"})}
+steps.forEach(s=>s.addEventListener("click",()=>show(+s.dataset.step)));
+$("prevBtn").onclick=()=>show(current-1);$("nextBtn").onclick=()=>show(current===2?0:current+1);
+$("layoutChoices").querySelectorAll(".choice").forEach(c=>c.onclick=()=>{document.querySelectorAll("#layoutChoices .choice").forEach(x=>x.classList.remove("selected"));c.classList.add("selected");layout=c.dataset.value});
+function updateStyle(){let c=$("accent").value;document.documentElement.style.setProperty("--accent",c);$("samplePage").style.setProperty("--accent",c);$("samplePage").querySelector(".sample-callout").style.background=$("activityColor").value;updateParityPreview()}
+function updateParityPreview(){let n=parseInt($("previewPage")?.value||"82",10);let even=n%2===0;let body=$("sampleBody");if(body){body.classList.toggle("reverse",!even);$("parityHint").textContent="Vista previa de página "+(even?"par":"impar")+": banda lateral a la "+(even?"izquierda":"derecha")+" y teoría amplia a la "+(even?"derecha":"izquierda")+". (Página "+n+")"}}
+["accent","activityColor"].forEach(id=>$(id).addEventListener("change",updateStyle));
+$("previewPage").addEventListener("input",updateParityPreview);
+function num(id,def){let v=parseInt($(id).value,10);return Number.isFinite(v)?v:def}
+function total(){let t=num("introPages",1)+num("contentPages",10)+num("reviewPages",2)+num("projectPages",2);$("pageTotal").textContent="Total estimado: "+t+" páginas. Numeración: "+num("startPage",1)+" a "+(num("startPage",1)+t-1)+".";return t}
+["introPages","contentPages","reviewPages","projectPages","startPage"].forEach(id=>$(id).addEventListener("input",()=>{let old=readPagePlan();total();renderPlanner(old)}));
+function val(id){return $(id).value.trim()}
+function checked(){return [...document.querySelectorAll("#components input")].filter(x=>x.checked).map(x=>x.value)}
+function data(){return {book:val("book"),subject:val("subject"),level:val("level"),audience:val("audience"),purpose:val("purpose"),context:val("context"),layout,fontTitle:val("fontTitle"),fontBody:val("fontBody"),customFontName:customFont.name,customFontFileName:customFont.fileName,customFontTarget:customFont.target,accent:val("accent"),activityColor:val("activityColor"),corners:val("corners"),density:val("density"),reference:val("reference"),referenceStyle:val("styleReferenceNotes"),introPages:num("introPages",1),contentPages:num("contentPages",10),reviewPages:num("reviewPages",2),projectPages:num("projectPages",2),startPage:num("startPage",1),pageSize:val("pageSize"),sequence:val("sequence"),competency:val("competency"),objectives:val("objectives"),indicators:val("indicators"),evaluation:val("evaluation"),components:checked(),imagePolicy:val("imagePolicy"),activityStyle:val("activityStyle"),pagePlan:readPagePlan(),pdfExtract:val("pdfExtract"),topicPlan:readTopicPlan()}}
+
+const pageSections=["SABER","SABER HACER","SABER MÁS","PRESTA ATENCIÓN","CLAVES","PASA A LA ACCIÓN","ACTIVIDADES","GLOSARIO","TABLAS","ESQUEMAS", "AUTOEVALUACIÓN","PROYECTO INTEGRADOR","PREGUNTAS DE RESPUESTA BREVE","PREGUNTAS DE DESARROLLO","COMPLETAR FRASES","COMPLETAR ESQUEMAS","RELACIONAR CONCEPTOS","ORDENAR SECUENCIAS","VERDADERO O FALSO","IDENTIFICAR EN IMÁGENES","EJERCICIOS DE APLICACIÓN","ANÁLISIS DE CASOS"];
+function pageTypes(){let a=[],n=num("startPage",1);a.push({number:n++,type:"Página inicial e introductoria"});for(let i=0;i<num("contentPages",10);i++)a.push({number:n++,type:"Desarrollo"});for(let i=0;i<num("reviewPages",2);i++)a.push({number:n++,type:"Actividades finales"});for(let i=0;i<num("projectPages",2);i++)a.push({number:n++,type:"Proyecto"});return a}
+function readPagePlan(){return [...document.querySelectorAll(".page-card")].map(c=>({number:+c.dataset.number,type:c.querySelector("[data-field=type]").value,title:c.querySelector("[data-field=title]").value,topic:c.querySelector("[data-field=topic]").value,goal:c.querySelector("[data-field=goal]").value,details:c.querySelector("[data-field=details]").value,activities:c.querySelector("[data-field=activities]").value,activityLayout:c.querySelector("[data-field=activityLayout]")?.value||"Según el espacio disponible",visual:c.querySelector("[data-field=visual]").value,editorialStyle:c.querySelector("[data-field=editorialStyle]")?.value||"Automático según la función pedagógica",composition:c.querySelector("[data-field=composition]")?.value||"Composición variable según el contenido",sections:[...c.querySelectorAll("[data-section]:checked")].map(x=>x.value)}))}
+
+function updatePageLayoutPreview(card){
+ const type=card.querySelector('[data-field="type"]')?.value||"Desarrollo";
+ const style=card.querySelector('[data-field="editorialStyle"]')?.value||"Automático según la función pedagógica";
+ const composition=card.querySelector('[data-field="composition"]')?.value||"Composición variable según el contenido";
+ const layout=(type==="Página inicial e introductoria" && (composition.includes("Imagen grande y representativa") || composition.includes("imagen grande y representativa")))?"opening-central":
+   composition.includes("banda lateral izquierda")?"side-left":
+   composition.includes("banda lateral derecha")?"side-right":
+   composition.includes("Dos columnas")?"two":
+   composition.includes("Una columna")||composition.includes("Imagen principal")?"image":
+   (composition.includes("Diagrama")||composition.includes("diagrama o tabla central"))?"diagram":
+   composition.includes("Secuencia")?"steps":
+   composition.includes("Bloques de actividades")?"full":
+   composition.includes("Proyecto")?"project":
+   (type==="Actividades finales"?"full":type==="Proyecto"?"project":style.includes("esquema")?"diagram":"two");
+ const accent=type==="Página inicial e introductoria"?"#00A6C7":type==="Actividades finales"?"#176B87":type==="Proyecto"?"#5276ad":"#1683a5";
+ const soft=type==="Actividades finales"?"#fff4d6":type==="Proyecto"?"#eef3fb":"#e8f5fa";
+ const box=card.querySelector(".page-layout-preview");
+ if(!box)return;
+ const sheet=box.querySelector(".preview-sheet");
+ sheet.className="preview-sheet layout-"+layout;
+ sheet.style.setProperty("--pv-accent",accent);sheet.style.setProperty("--pv-soft",soft);
+ let sideLeft=layout==="side-left";
+ if(layout==="side-right")sideLeft=false;
+ const lines='<div class="pv-line"></div><div class="pv-line mid"></div><div class="pv-line short"></div><div class="pv-line"></div><div class="pv-line mid"></div>';
+ if(layout==="opening-central"){
+   sheet.innerHTML=`<div class="pv-head"><i class="pv-num"></i><i class="pv-title"></i></div>
+   <div class="pv-opening-image"></div>
+   <div class="pv-opening-column">
+     <div class="pv-line"></div><div class="pv-line mid"></div>
+     <div class="pv-opening-diagram"><i></i><i></i><i></i></div>
+     <div class="pv-line short"></div><div class="pv-line"></div>
+   </div><div class="pv-footer"></div>`;
+ } else sheet.innerHTML=`<div class="pv-head"><i class="pv-num"></i><i class="pv-title"></i></div>
+ <div class="pv-body">
+ ${sideLeft?`<div class="pv-side"><div class="pv-photo"></div><div class="pv-box"></div><div class="pv-line"></div></div>`:""}
+ <div class="pv-main">${layout==="diagram"?'<div class="pv-photo"></div>':layout==="image"?'<div class="pv-photo"></div>':''}${lines}${layout==="full"||layout==="modules"?'<div class="pv-box"></div>':''}</div>
+ ${!sideLeft&&layout!=="full"&&layout!=="image"&&layout!=="steps"&&layout!=="diagram"&&layout!=="project"?`<div class="pv-side"><div class="pv-photo"></div><div class="pv-box"></div><div class="pv-line"></div></div>`:""}
+ ${layout==="steps"||layout==="project"?`<div class="pv-side"><div class="pv-photo"></div><div class="pv-box"></div></div>`:""}
+ </div>
+ ${type==="Actividades finales"||layout==="full"?'<div class="pv-footer"></div>':''}`;
+ const title=layout==="opening-central"?"Imagen protagonista + columna central editorial":layout==="side-left"?"Banda lateral izquierda":layout==="side-right"?"Banda lateral derecha":layout==="image"?"Imagen superior + texto":layout==="diagram"?"Imagen temática + diagrama o tabla central":layout==="steps"?"Secuencia de procedimiento":layout==="full"?"Bloques de ancho completo":layout==="project"?"Proyecto con evidencias":layout==="modules"?"Bloques modulares":"Dos columnas asimétricas";
+ box.querySelector(".preview-copy").innerHTML=`<strong>Vista esquemática: ${title}</strong><span><b>Tipo:</b> ${type}</span><span><b>Estilo:</b> ${style}</span><span><b>Maquetación:</b> ${composition}</span><span>Es una representación orientativa; la distribución final se ajusta al contenido y al formato carta.</span>`;
+}
+
+function renderPlanner(saved){let old=saved||readPagePlan(),lookup=new Map(old.map(p=>[p.number,p])),host=$("pagePlanner");host.innerHTML="";
+pageTypes().forEach((base,i)=>{let p=lookup.get(base.number)||{...base,title:"",topic:"",goal:"",details:"",activities:base.type==="Actividades finales"?"Alta: página centrada en actividades variadas":"Pocas: 1 o 2 actividades breves",activityLayout:"Según el espacio disponible",visual:"Elegir según el contenido",editorialStyle:"Automático según la función pedagógica",composition:base.type==="Página inicial e introductoria"?"Imagen grande y representativa + columna central de contenido + diagrama o tabla sintética + expresión breve":"Composición variable según el contenido",sections:base.type==="Página inicial e introductoria"?["SABER","SABER HACER","NOS HACEMOS PREGUNTAS"]:base.type==="Desarrollo"?["SABER"]:base.type==="Actividades finales"?["PREGUNTAS DE RESPUESTA BREVE","COMPLETAR FRASES","COMPLETAR ESQUEMAS","RELACIONAR CONCEPTOS","ORDENAR SECUENCIAS","VERDADERO O FALSO","EJERCICIOS DE APLICACIÓN"]:["PROYECTO INTEGRADOR"]};
+let card=document.createElement("details");card.className="page-card";card.dataset.number=base.number;
+const classForType=t=>(t==="Introducción"||t==="Página inicial e introductoria")?"estilo-inicial":t==="Desarrollo"?"estilo-contenido":t==="Actividades finales"?"estilo-final":t==="Proyecto"?"estilo-proyecto": "estilo-contenido";
+card.classList.add(classForType(p.type||base.type));card.open=i===0;
+let summary=document.createElement("summary");summary.textContent="Página "+base.number+" · "+(p.title||p.type)+" — editar";card.appendChild(summary);
+let fields=document.createElement("div");fields.className="page-fields";
+fields.innerHTML=`<div class="field"><label>Tipo</label><select data-field="type"><option>Página inicial e introductoria</option><option>Desarrollo</option><option>Actividades finales</option><option>Proyecto</option><option>Evaluación</option><option>Otro</option></select></div>
+<div class="field"><label>Título de la página</label><input data-field="title" placeholder="Ej. Clasificación de las masas"></div>
+<div class="field full"><label>Tema que quieres desarrollar</label><textarea data-field="topic" placeholder="Ej. Diferencias entre masas fermentadas, quebradas y batidas."></textarea></div>
+<div class="field full"><label>¿Qué debe aprender el estudiante?</label><input data-field="goal" placeholder="Ej. Diferenciar las masas según sus ingredientes y técnicas."></div>
+<div class="field full"><label>Contenido específico que debe incluir</label><textarea data-field="details" placeholder="Conceptos, explicaciones, ejemplos o procedimientos que no deben faltar."></textarea></div>
+<div class="field"><label>Cantidad de actividades</label><select data-field="activities"><option>Ninguna: priorizar teoría</option><option selected>Pocas: 1 o 2 actividades breves</option><option>Media: 3 o 4 actividades</option><option>Alta: página centrada en actividades variadas</option><option>Actividades como contenido principal</option></select></div>
+<div class="field advanced-page-setting"><label>Ubicación y tamaño del cuadro de actividad</label><select data-field="activityLayout"><option value="Según el espacio disponible">Automático: según el contenido</option><option value="Bloque lateral estrecho, alineado con la columna secundaria">Cuadro lateral</option><option value="Bloque de ancho completo, de lado a lado, ocupando toda la caja de texto">Ancho completo: de lado a lado</option><option value="Franja inferior de ancho completo, después del contenido principal">Franja inferior completa</option><option value="Bloque integrado junto al contenido, sin interrumpir la lectura">Integrado junto al contenido</option><option value="Toda la página se organiza como una actividad principal de ancho completo">Toda la página como actividad</option></select><span class="hint">El cuadro debe conservar la paleta, los bordes y las esquinas del estilo editorial elegido.</span></div>
+<div class="field"><label>Estilo editorial de esta página</label><select data-field="editorialStyle">
+<option>Automático según la función pedagógica</option>
+<option>Apertura + desarrollo</option>
+<option>Desarrollo + esquema visual</option>
+<option>Desarrollo + actividad</option>
+<option>Desarrollo + práctica</option>
+<option>Actividades + análisis</option>
+<option>Proyecto + procedimiento</option>
+<option>Proyecto + evaluación</option>
+<option>Solo teoría y lectura</option>
+<option>Solo ejercicios y resolución</option>
+</select><span class="hint">Puedes combinar recursos de distintas familias cuando ayuden a enseñar mejor el contenido.</span></div>
+<div class="field"><label>Composición / maquetación</label><select data-field="composition">
+<option>Composición variable según el contenido</option>
+<option>Teoría amplia + banda lateral izquierda</option>
+<option>Teoría amplia + banda lateral derecha</option>
+<option>Dos columnas asimétricas</option>
+<option>Una columna con imagen superior</option>
+<option>Imagen principal + texto en dos bloques</option>
+<option selected>Imagen grande y representativa + columna central de contenido + diagrama o tabla sintética + expresión breve</option>
+<option>Diagrama o tabla central + explicación breve</option>
+<option>Secuencia de procedimiento paso a paso</option>
+<option>Bloques de actividades en distribución libre</option>
+<option>Proyecto con cronograma y evidencias</option>
+</select><span class="hint">No repetir la misma composición en páginas consecutivas si el contenido permite otra solución.</span></div>
+<div class="page-layout-preview" aria-live="polite">
+ <div class="preview-sheet layout-two"><div class="pv-head"><i class="pv-num"></i><i class="pv-title"></i></div><div class="pv-body"><div class="pv-main"><div class="pv-line"></div><div class="pv-line mid"></div><div class="pv-line short"></div><div class="pv-line"></div></div><div class="pv-side"><div class="pv-photo"></div><div class="pv-box"></div></div></div><div class="pv-footer"></div></div>
+ <div class="preview-copy"><strong>Vista esquemática</strong><span>Al cambiar el estilo o la composición, aquí verás una aproximación de la distribución.</span></div>
+</div>
+<div class="field"><label>Recurso visual</label><select data-field="visual"><option>Elegir según el contenido</option><option>Fotografía real con pie</option><option>Diagrama o esquema</option><option>Tabla comparativa</option><option>Secuencia ilustrada de pasos</option><option>Infografía técnica</option><option>Sin imagen</option></select></div>
+<div class="field full"><label>Secciones que quieres incluir (marca solo algunas)</label><div class="mini-checks">${pageSections.map(s=>`<label><input type="checkbox" data-section value="${s}">${s}</label>`).join("")}</div><span class="hint">Puedes dejar todas sin marcar. El asistente no debe agregar secciones por obligación.</span></div>`;
+card.appendChild(fields);
+fields.querySelector('[data-field="type"]').value=p.type||base.type;
+fields.querySelector('[data-field="type"]').addEventListener("change",e=>{card.classList.remove("estilo-inicial","estilo-contenido","estilo-final","estilo-proyecto");card.classList.add(classForType(e.target.value));});
+["title","topic","goal","details","activities","visual","editorialStyle","composition"].forEach(k=>{fields.querySelector(`[data-field="${k}"]`).value=p[k]||""});
+fields.querySelector(`[data-field="activityLayout"]`).value=p.activityLayout||"Según el espacio disponible";
+fields.querySelector(`[data-field="editorialStyle"]`).value=p.editorialStyle||"Automático según la función pedagógica";
+fields.querySelector(`[data-field="composition"]`).value=p.composition||(p.type==="Página inicial e introductoria"?"Imagen grande y representativa + columna central de contenido + diagrama o tabla sintética + expresión breve":"Composición variable según el contenido");
+fields.querySelectorAll('[data-field="type"],[data-field="editorialStyle"],[data-field="composition"]').forEach(el=>el.addEventListener("change",()=>updatePageLayoutPreview(card)));
+updatePageLayoutPreview(card);
+fields.querySelectorAll("[data-section]").forEach(x=>x.checked=(p.sections||[]).includes(x.value));
+host.appendChild(card);
+})}
+function apply(d){let map={book:"book",subject:"subject",level:"level",audience:"audience",purpose:"purpose",context:"context",fontTitle:"fontTitle",fontBody:"fontBody",accent:"accent",activityColor:"activityColor",corners:"corners",density:"density",reference:"reference",introPages:"introPages",contentPages:"contentPages",reviewPages:"reviewPages",projectPages:"projectPages",startPage:"startPage",pageSize:"pageSize",sequence:"sequence",competency:"competency",objectives:"objectives",indicators:"indicators",evaluation:"evaluation",imagePolicy:"imagePolicy",activityStyle:"activityStyle"};Object.entries(map).forEach(([k,id])=>{if(d[k]!==undefined)$(id).value=d[k]});if(d.layout){layout=d.layout;document.querySelectorAll("#layoutChoices .choice").forEach(c=>c.classList.toggle("selected",c.dataset.value===layout))}if(d.components){document.querySelectorAll("#components input").forEach(x=>x.checked=d.components.includes(x.value))}if(d.pdfExtract!==undefined)$("pdfExtract").value=d.pdfExtract;updateStyle();total();renderPlanner(d.pagePlan||[])}
+function review(){let d=data(),warnings=[];if(!d.book)warnings.push("Falta el título o nombre del módulo.");if(!d.purpose&&!d.competency)warnings.push("Falta explicar qué aprenderá el estudiante o definir la competencia.");if(d.contentPages<1)warnings.push("Debe existir al menos una página de desarrollo.");if(!d.components.length)warnings.push("No hay secciones editoriales predeterminadas disponibles.");if(d.projectPages===0)warnings.push("No se han reservado páginas para el proyecto final.");if(d.reviewPages===0)warnings.push("No se han reservado páginas de actividades finales.");let box=$("checksResult");box.innerHTML="";let totalPages=total();if(warnings.length){warnings.forEach(w=>{let x=document.createElement("div");x.className="alert";x.textContent="Revisar: "+w;box.appendChild(x)})}else{let x=document.createElement("div");x.className="notice success";x.textContent="La configuración básica está completa. Revisa igualmente que los objetivos, indicadores y actividades estén alineados.";box.appendChild(x)}let x=document.createElement("div");x.className="notice";x.textContent="Estructura: "+totalPages+" páginas en total. El prompt pedirá verificar la coherencia antes de desarrollar.";box.appendChild(x)}
+function buildPrompt(){let d=data(),totalPages=total(),start=d.startPage,end=start+totalPages-1;let lines=[
+"PROMPT MAESTRO — DISEÑO EDITORIAL DE LIBRO DIDÁCTICO",
+"",
+"Actúa como diseñador editorial, autor de libros de texto y especialista en pedagogía técnica y en el área indicada. Tu tarea es planificar y desarrollar un libro didáctico riguroso, claro, visualmente coherente y adecuado al nivel educativo.",
+"",
+"1. DATOS DEL PROYECTO",
+"Libro o módulo: "+(d.book||"Por definir"),
+"Área: "+(d.subject||"Por definir"),
+"Nivel: "+d.level,
+"Público: "+(d.audience||"Por definir"),
+"Propósito de aprendizaje: "+(d.purpose||"Propón uno a partir del tema y valídalo conmigo."),
+"Contexto: "+(d.context||"No especificado"),
+"",
+"2. IDENTIDAD EDITORIAL",
+"ESTILO PREDETERMINADO OBLIGATORIO: MARCOS. No preguntar qué estilo usar ni cambiarlo por defecto. Aplicar un diseño de libro escolar editorial: fondo blanco dominante, márgenes generosos, títulos sans serif en naranja, texto negro/gris con tipografía muy legible, subtítulos jerarquizados, fotografías documentales rectangulares con pies, destacados puntuales con fondos crema/amarillo pálido y líneas finas. Evitar tarjetas, iconos decorativos, sombras, grandes bandas de color y exceso de recuadros. Mantener continuidad entre páginas y variar la composición solo cuando ayude a explicar mejor.",
+"Composición: "+d.layout,
+"REGLA PARA PÁGINAS DE DESARROLLO: cuando la página utilice dos columnas asimétricas, alterna la banda lateral entre izquierda y derecha según la numeración par/impar. Esta regla no se impone a aperturas, actividades, proyectos ni composiciones mixtas que necesiten otra distribución.",
+"Tipografía de títulos: "+d.fontTitle+". Texto: "+d.fontBody+".",
+"Color principal: "+d.accent+". Fondo de actividades: "+d.activityColor+".",
+ "Recuadros: usar solo cuando sean necesarios; preferir fondo blanco, líneas finas y esquinas discretas. Densidad: "+d.density+".",
+"ESTILO VISUAL PRIORITARIO: libro escolar profesional de gastronomía, fondo blanco dominante, márgenes amplios y jerarquía clara. La identidad cromática se organiza por clases CSS: naranja MARCOS para estilo-inicial y encabezados; naranja suave y gris para estilo-contenido; crema/amarillo pálido con acento naranja para estilo-final; proyecto con naranja discreto y fondos neutros. Evitar saturación, adornos y exceso de recuadros.",
+"COMPOSICIÓN: dos columnas asimétricas. La principal contiene teoría y explicación; la secundaria agrupa solo los apoyos pertinentes. Alternar la banda lateral según página par/impar. Fotografías rectangulares de procesos, utensilios, ingredientes y preparaciones; variar tamaño y ubicación sin interrumpir la lectura. Añadir pies explicativos. Usar subtítulos identificados por un pequeño acento naranja. Numeración de página en esquina inferior.",
+"Formato: "+d.pageSize+". CONFIGURACIÓN PREDETERMINADA CARTA VERTICAL: 8,5 × 11 pulgadas (21,59 × 27,94 cm), proporción 17:22 (0,773:1). Si se solicita una imagen de página completa, componerla en orientación vertical con esa proporción; resolución de referencia para impresión: 2550 × 3300 px a 300 ppp. No recortar ni deformar el diseño. Fondo blanco, jerarquía tipográfica clara, márgenes equilibrados y paginación inferior.",
+"Referencia visual: "+(d.reference||"Aplicar el estilo editorial descrito; si adjunto imágenes, analizarlas y extraer sus rasgos gráficos."),
+ "REGLA DE SIMPLICIDAD: imitar la sobriedad de la nueva referencia: fondo blanco, texto negro/gris, acento de color mínimo, márgenes amplios, pocos subtítulos, imágenes técnicas puntuales y abundante espacio en blanco. Evitar páginas saturadas, grandes bandas de color, cajas repetidas, tarjetas, iconos decorativos, sombras, infografías innecesarias y demasiadas actividades juntas.",
+"Conservar exactamente esta identidad en todas las páginas y unidades relacionadas, salvo que solicite un cambio.",
+"",
+"3. PLANIFICACIÓN Y EXTENSIÓN",
+"Crear UNA sola página inicial-introductoria (no separar en dos páginas), seguida de "+d.contentPages+" de desarrollo, "+d.reviewPages+" de actividades finales y "+d.projectPages+" de proyecto final: "+totalPages+" páginas en total.",
+"Numeración desde "+start+" hasta "+end+".",
+"Temas propuestos por el usuario:\n"+(d.sequence||"No proporcionados: propone una secuencia progresiva y solicita aprobación."),
+"FUENTE PDF (texto extraído; priorizar este material, organizarlo y no inventar temas ajenos):\n"+(d.pdfExtract||"No se ha proporcionado texto extraído de PDF."),
+ "TEMARIO DEL MÓDULO (temas, contenidos y subcontenidos; distribuirlos de forma progresiva y sin duplicar):\n"+formatTopicPlan(d.topicPlan),
+ "ORGANIZACIÓN POR DEFECTO: la primera página es una única PÁGINA INICIAL E INTRODUCTORIA que combina presentación, motivación y contextualización sin duplicar información. Las páginas intermedias son DESARROLLO. Las penúltimas páginas son ACTIVIDADES FINALES, no repaso: deben contener ejercicios para resolver basados en el PDF, como preguntas, completar frases, completar esquemas, relacionar, ordenar procesos, verdadero/falso, identificar imágenes, ejercicios de aplicación y análisis de casos. Distribuye formatos distintos entre páginas; permite seleccionar y quitar formatos. Las últimas páginas son PROYECTO FINAL. Las últimas páginas son PROYECTO FINAL, con planificación, elaboración y evaluación. Distribuye los temas del PDF de forma progresiva, sin duplicaciones; reserva el cierre para repaso y proyecto.",
+ "REGLA PARA ACTIVIDADES FINALES: no usar la etiqueta ni el enfoque de “repaso”. Diseñar páginas de ejercicios similares a un libro escolar: preguntas numeradas, completar espacios, completar mapas/esquemas/tablas, relacionar columnas, ordenar pasos, verdadero/falso, interpretación de imágenes, resolución de problemas y aplicación práctica. No introducir teoría extensa; cada actividad debe tener consigna, espacio o formato de respuesta y dificultad progresiva. Elegir solo los tipos pertinentes al contenido.",
+"Antes de redactar, analizar el PDF y presentar una tabla con número, tipo de página, título, objetivo, contenido específico, recurso visual y actividades. No desarrollar páginas hasta recibir aprobación.",
+"",
+"4. COMPETENCIAS Y EVALUACIÓN",
+"Competencia: "+(d.competency||"Proponer una competencia pertinente y solicitar validación."),
+"Objetivos: "+(d.objectives||"Proponer objetivos claros, observables y alineados con la competencia."),
+"Indicadores: "+(d.indicators||"Proponer indicadores medibles que evidencien el aprendizaje."),
+"Criterios: "+(d.evaluation||"Proponer criterios coherentes, incluyendo SER, SABER, HACER y DECIDIR cuando corresponda."),
+"Comprobar alineación entre competencia, objetivos, contenidos, actividades e indicadores.",
+"",
+"5. SECCIONES Y RECURSOS",
+"Secciones seleccionadas: "+(d.components.join(", ")||"Elegir las necesarias según el tema")+".",
+"REFERENCIA VISUAL ADJUNTA: "+(d.referenceStyle||"No se proporcionó referencia visual adicional.")+". Usa esta referencia para extraer paleta, jerarquía, marcos, tipografía, proporciones, tratamiento fotográfico y densidad editorial. Adapta esos rasgos a la función de cada página; no copies textos ni contenido protegido. Mantén legibilidad y coherencia.",
+"Imágenes: "+d.imagePolicy+". Actividades preferidas: "+(d.activityStyle||"Variar comprensión, análisis, aplicación, resolución de problemas e investigación.")+".",
+"Cada imagen debe aportar información, tener ubicación definida y pie explicativo cuando corresponda. No inventar datos técnicos ni imágenes como si fueran fuentes verificadas.",
+"",
+"6. ESTRUCTURA POR TIPO DE PÁGINA",
+"PÁGINA INICIAL E INTRODUCTORIA (UNA SOLA SECCIÓN Y UNA SOLA PÁGINA): combina apertura visual y contextualización didáctica. Su MAQUETACIÓN PREDETERMINADA Y OBLIGATORIA es UNA SOLA COLUMNA EDITORIAL CENTRAL, de lectura vertical continua; no usar dos columnas asimétricas ni banda lateral en esta página. La composición debe estar protagonizada por una IMAGEN GRANDE Y REPRESENTATIVA del tema, seguida o acompañada por una COLUMNA CENTRAL DE CONTENIDO que agrupe una expresión introductoria breve, un diagrama o tabla sintética, el objetivo y solo los bloques SABER, SABER HACER y NOS HACEMOS PREGUNTAS que aporten valor. Mantener el contenido centrado, equilibrado y fácil de recorrer visualmente, con amplios espacios en blanco. Evitar una segunda página llamada introducción y no repetir la misma explicación en el desarrollo. Usar estilo-inicial, naranja MARCOS, recuadros discretos y paginación inferior.",
+"Desarrollo (9–12 páginas por defecto): teoría clara y técnica, subtítulos jerarquizados, ejemplos gastronómicos, fotografías documentales, procedimientos SABER HACER, recuadros CLAVES para conceptos técnicos o de emprendimiento, PRESTA ATENCIÓN y SABER MÁS solo cuando aporten valor; PASA A LA ACCIÓN para tareas breves. La columna teórica es amplia y la secundaria más estrecha. Aplicar la alternancia espejo par/impar.",
+"Actividades finales (2 páginas por defecto): página 1 con ESQUEMA DE CONTENIDOS y REPASA LO ESENCIAL mediante preguntas, completar, relacionar y ordenar; página 2 con PRÁCTICA, AMPLÍA y AUTOEVALUACIÓN con escala de valoración. Incluir competencias técnicas y consignas claras. No convertirlas en teoría extensa ni repetir formatos mecánicamente.",
+"Proyecto final (2 páginas por defecto): plantear un proyecto integrador gastronómico con desafío, propósito, competencias técnicas, planificación, insumos/equipos, costos si corresponde, procedimiento, normas de inocuidad y seguridad, producto esperado, evidencias, presentación y rúbrica/criterios de evaluación. La segunda página debe permitir documentar resultados y reflexionar. No reutilizar las actividades de repaso.",
+"",
+"7. CALIDAD Y COHERENCIA",
+"Usar lenguaje claro, técnico y adecuado al nivel. Evitar repeticiones, relleno, preguntas cuya respuesta aparezca inmediatamente y actividades mecánicas.",
+"Verificar exactitud de conceptos, cantidades, tiempos, temperaturas, procedimientos, higiene y seguridad. Señalar incertidumbres en lugar de inventar información.",
+"Revisar que no haya contradicciones de color, tipografía, distribución, paginación, títulos o competencias. Si detectas incoherencias, explica el problema y propone una corrección antes de producir.",
+"Cada página debe relacionarse con la anterior y preparar la siguiente. No repetir actividades ni imágenes sin motivo.",
+"",
+"7A. CLASES HTML OBLIGATORIAS POR TIPO DE PÁGINA",
+"El HTML de cada página debe asignar una clase semántica específica al contenedor principal: class=\"estilo-inicial\" para la página inicial y cualquier página de apertura; class=\"estilo-contenido\" para todas las páginas de desarrollo teórico; class=\"estilo-final\" para las páginas de actividades finales. Si hay páginas de proyecto, pueden usar una clase adicional estilo-proyecto, sin sustituir las tres clases anteriores cuando corresponda.",
+"Define en una hoja CSS reglas independientes para .estilo-inicial, .estilo-contenido, .estilo-final y .estilo-proyecto. No basta con nombrarlas: cada clase debe controlar paleta, encabezados, numeración, subtítulos, recuadros, bloques de actividad, bordes y fondos. Mantén la identidad general coherente, pero permite que cada familia tenga personalidad visual reconocible.",
+"ESTILO INICIAL: aplicar a la única página inicial-introductoria. Maquetación obligatoria de UNA SOLA COLUMNA EDITORIAL, sin banda lateral ni división en dos columnas. Naranja MARCOS para títulos, numeración y líneas; texto breve que presente y contextualice; imagen principal integrada en el flujo; secciones SABER y SABER HACER; bloque NOS HACEMOS PREGUNTAS con esquinas curvadas; márgenes amplios y paginación inferior.",
+"ESTILO CONTENIDO: fondo blanco; naranja discreto y grises; dos columnas asimétricas; teoría principal amplia y apoyos laterales; subtítulos jerarquizados con un acento naranja discreto; fotografías técnicas rectangulares con pies; recuadros CLAVES, SABER MÁS, PRESTA ATENCIÓN y SABER HACER solo cuando sean pertinentes.",
+"ESTILO PROYECTO: identidad propia para el trabajo práctico; bloques de desafío, propósito, planificación, recursos, procedimiento, evidencias, resultados y evaluación. Puede usar cronogramas, secuencias fotográficas y rúbricas; no debe parecer una página de actividades finales.",
+"SISTEMA MODULAR: cada página debe seleccionar una familia principal (apertura, desarrollo, actividades o proyecto) y, cuando sea pedagógicamente útil, un estilo mixto. Apertura + desarrollo: presentación breve más explicación; desarrollo + esquema: teoría más diagrama/tabla; desarrollo + actividad: explicación y ejercicio aplicado; desarrollo + práctica: procedimiento ilustrado; actividades + análisis: consignas y caso; proyecto + procedimiento: planificación y secuencia técnica; proyecto + evaluación: evidencias y rúbrica. No mezclar por decoración.",
+"VARIACIÓN DE MAQUETACIÓN: variar deliberadamente entre páginas la ubicación y tamaño de imágenes, banda lateral izquierda/derecha, diagramas centrales/laterales, tablas, subtítulos y proporción de texto. Evitar la misma composición en páginas consecutivas. Mantener márgenes, tipografías, paleta, jerarquía y paginación comunes.",
+"ANTES DE DISEÑAR CADA PÁGINA: identificar su función pedagógica, elegir familia, decidir si necesita estilo mixto, seleccionar composición, distribuir texto e imágenes y comprobar que no repita la maqueta anterior. Si hay varias soluciones, proponer hasta tres alternativas breves de maquetación para elegir antes de desarrollar.",
+"ESTILO FINAL: fondo blanco; encabezados y bordes en naranja discreto; actividades diferenciadas mediante bloques de color coordinado con la paleta editorial, con bordes y esquinas redondeadas; los bloques pueden ser laterales, integrados o de ancho completo de lado a lado, incluso ocupar toda la zona de contenido si la página es una actividad; incluir esquema de contenidos, repaso, práctica, ampliación y autoevaluación según la página; consignas y espacios de respuesta claros.",
+"El HTML debe aplicar estas clases realmente a los contenedores de sección, no solo mencionarlas en comentarios o instrucciones. Para estilos mixtos, conserva la clase principal y añade clases complementarias específicas (por ejemplo .mixto-desarrollo-actividad o .mixto-proyecto-evaluacion) con reglas CSS propias. Verificar que cada página tenga una única clase principal correcta y que el CSS esté incluido.",
+"8. FORMA DE TRABAJO",
+"Primero planifica el libro completo y espera mi aprobación. Después desarrolla únicamente la página que solicite. Al terminar, espera mi instrucción para continuar. Mantén un registro de las decisiones editoriales para reutilizarlas en las siguientes unidades.",
+"Al generar cada página, entrega el contenido organizado y una descripción precisa de su diagramación. Si solicito una imagen o maqueta visual, respeta el mismo diseño editorial.",
+"",
+"INSTRUCCIÓN INICIAL: analiza estos datos, detecta vacíos o contradicciones y presenta primero el esquema completo. Haz solo las preguntas imprescindibles que falten. No desarrolles todavía la página 1."
+];return lines.join("\n")}
+$("generateBtn").onclick=()=>{$("output").value=buildPrompt();review();$("output").scrollIntoView({behavior:"smooth",block:"center"})};
+$("copyBtn").onclick=async()=>{if(!$("output").value)$("output").value=buildPrompt();try{await navigator.clipboard.writeText($("output").value);$("copyBtn").textContent="¡Copiado!";setTimeout(()=>$("copyBtn").textContent="Copiar prompt",1600)}catch(e){$("output").select();document.execCommand("copy")}};
+$("downloadBtn").onclick=()=>{let t=$("output").value||buildPrompt(),a=document.createElement("a"),u=URL.createObjectURL(new Blob([t],{type:"text/plain;charset=utf-8"}));a.href=u;a.download="prompt_editorial_"+(val("book").replace(/[^a-z0-9]/gi,"_")||"libro")+".txt";a.click();URL.revokeObjectURL(u)};
+
+
+// Referencia visual: imagen o primera página de PDF. Detecta colores aproximados y permite editar la descripción.
+$("styleReferenceFile").addEventListener("change", async e=>{
+ const file=e.target.files?.[0]; if(!file)return;
+ const status=$("styleReferenceStatus"), preview=$("styleReferencePreview"), notes=$("styleReferenceNotes");
+ status.textContent="Analizando referencia visual…"; preview.innerHTML="";
+ try{
+  let canvas=document.createElement("canvas"), ctx=canvas.getContext("2d"), label=file.name;
+  if(file.type==="application/pdf"||/\.pdf$/i.test(file.name)){
+   if(!window.pdfjsLib)throw new Error("No se pudo cargar el lector PDF. Comprueba tu conexión.");
+   pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+   const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+   const page=await pdf.getPage(1), vp=page.getViewport({scale:1.15});
+   canvas.width=Math.min(1100,Math.round(vp.width));canvas.height=Math.round(vp.height*canvas.width/vp.width);
+   await page.render({canvasContext:ctx,viewport:page.getViewport({scale:canvas.width/vp.width})}).promise;
+   label+=" (primera página de "+pdf.numPages+" páginas)";
+  }else{
+   const img=new Image(); const url=URL.createObjectURL(file);
+   await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
+   const scale=Math.min(1,1100/img.width);canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);ctx.drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);
+  }
+  preview.appendChild(canvas);
+  // Muestreo de píxeles para estimar una paleta representativa sin enviar el archivo a ningún servidor.
+  const counts=new Map(); const step=Math.max(1,Math.floor(Math.min(canvas.width,canvas.height)/90));
+  for(let y=0;y<canvas.height;y+=step*2)for(let x=0;x<canvas.width;x+=step*2){const q=ctx.getImageData(x,y,1,1).data;if(q[3]<180)continue;const rgb=[q[0],q[1],q[2]].map(v=>Math.round(v/32)*32);const key=rgb.map(v=>Math.min(255,v).toString(16).padStart(2,"0")).join("").toUpperCase();counts.set(key,(counts.get(key)||0)+1)}
+  const palette=[...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>"#"+x[0]);
+  const colorText=palette.map(c=>c).join(", ");
+  const desc=`Referencia visual: ${label}. Paleta aproximada detectada por muestreo: ${colorText}. Analizar visualmente la muestra para adaptar color principal y secundarios, contraste, jerarquía de títulos, líneas y recuadros, radios de esquina, proporción de columnas, tratamiento fotográfico, pies de imagen y densidad de texto. Mantener el estilo de la referencia sin copiar contenido ni textos.`;
+  notes.value=desc; status.textContent="Referencia cargada. Paleta aproximada detectada; revisa y ajusta la descripción antes de generar los prompts.";
+  palette.forEach(c=>{const chip=document.createElement("span");chip.className="palette-chip";chip.innerHTML=`<i style="background:${c}"></i>${c}`;preview.appendChild(chip)});
+ }catch(err){status.textContent="No se pudo analizar la referencia: "+err.message}
+});
+
+// PDF: extracción de texto para que el prompt pueda basarse en el material original.
+$("pdfFile").addEventListener("change", async e=>{
+ const file=e.target.files[0]; if(!file)return;
+ const status=$("pdfStatus"); status.textContent="Leyendo PDF y extrayendo texto…";
+ try{
+  if(!window.pdfjsLib)throw new Error("No se pudo cargar el lector PDF. Comprueba tu conexión a Internet.");
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const bytes=await file.arrayBuffer(), pdf=await pdfjsLib.getDocument({data:bytes}).promise;
+  let chunks=[];
+  for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),content=await page.getTextContent();const txt=content.items.map(x=>x.str).join(" ");if(txt.trim())chunks.push("\\n[PÁGINA PDF "+i+"]\\n"+txt)}
+  $("pdfExtract").value=chunks.join("\\n").slice(0,60000);
+  status.textContent="PDF leído: "+pdf.numPages+" páginas. Texto extraído: "+$("pdfExtract").value.length+" caracteres. Revisa si el documento tiene páginas escaneadas.";
+ }catch(err){status.textContent="No se pudo extraer el PDF: "+err.message}
+});
+function defaultExcelRows(){return readPagePlan().map(p=>({"Página":p.number,"Tipo":p.type,"Título":p.title,"Tema o contenido":p.topic,"Qué aprenderá":p.goal,"Contenido clave":p.details,"Actividades":p.activities,"Recurso visual":p.visual}))}
+function importRows(rows){
+ const normalized=rows.map(r=>{let get=(...keys)=>{for(const k of keys){if(r[k]!==undefined&&r[k]!==null)return String(r[k])}return ""};return {number:parseInt(get("Página","Numero","Número","numero"),10),type:get("Tipo","tipo")||"Desarrollo",title:get("Título","Titulo","titulo"),topic:get("Tema o contenido","Tema_contenido","Tema","tema"),goal:get("Qué aprenderá","Objetivo_aprendizaje","Objetivo de aprendizaje","Objetivo"),details:get("Contenido clave","Contenido_obligatorio","Contenido específico","Contenido"),activities:get("Actividades","Cantidad_actividades","Cantidad de actividades")||"Pocas: 1 o 2 actividades breves",activityLayout:get("Disposicion_bloque_actividad","Disposición del bloque de actividad")||"Según el espacio disponible",editorialStyle:get("Estilo_editorial","Estilo editorial")||"Automático según la función pedagógica",composition:get("Composicion","Composición")||"Composición variable según el contenido",visual:get("Recurso visual","Recurso_visual")||"Elegir según el contenido",sections:get("Secciones_incluir","Secciones que sí quieres","Secciones").split(/[;,]/).map(x=>x.trim()).filter(Boolean)};}).filter(x=>Number.isFinite(x.number));
+ if(!normalized.length)throw new Error("No se encontraron filas con la columna Numero.");
+ let min=Math.min(...normalized.map(x=>x.number)),max=Math.max(...normalized.map(x=>x.number));
+ $("startPage").value=min;
+ let rowsByType={Introducción:0,Desarrollo:0,Repaso:0,Proyecto:0};
+ normalized.forEach(x=>{let t=x.type.toLowerCase();if(t.includes("intro")||t.includes("inicial"))rowsByType.Introducción=1;else if(t.includes("repaso")||t.includes("actividad"))rowsByType.Repaso++;else if(t.includes("proyecto"))rowsByType.Proyecto++;else rowsByType.Desarrollo++});
+ $("introPages").value=1;$("contentPages").value=rowsByType.Desarrollo;$("reviewPages").value=rowsByType.Repaso;$("projectPages").value=rowsByType.Proyecto;
+ total();renderPlanner(normalized);$("excelStatus").textContent="Excel importado: "+normalized.length+" páginas organizadas. Revisa las fichas y ajusta lo necesario.";
+}
+$("excelImport").addEventListener("change",async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  if(!window.XLSX)throw new Error("No se cargó el lector Excel. Comprueba tu conexión o guarda el archivo como CSV.");
+  const buf=await file.arrayBuffer(),book=XLSX.read(buf,{type:"array"}),sheet=book.Sheets["Paginas"]||book.Sheets[book.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:""});
+  importRows(rows);
+  const meta=book.Sheets["Datos_libro"];if(meta){const entries=XLSX.utils.sheet_to_json(meta,{header:1,defval:""});const map={"Título del libro o módulo":"book","Área / especialidad":"subject","Nivel educativo":"level","Público destinatario":"audience","Propósito general":"purpose","Competencia general":"competency","Objetivos de aprendizaje":"objectives","Indicadores de logro":"indicators","Criterios de evaluación":"evaluation"};entries.slice(1).forEach(r=>{let id=map[r[0]];if(id&&r[1]!==undefined&&$(id))$(id).value=r[1]})}
+ }catch(err){$("excelStatus").textContent="Error al importar: "+err.message}
+ e.target.value="";
+});
+function exportExcelNow(){if(!window.XLSX){alert("No se cargó el módulo Excel. Comprueba tu conexión a Internet.");return}
+ const d=data(),wb=XLSX.utils.book_new(),rows=defaultExcelRows();
+ const ws=XLSX.utils.json_to_sheet(rows);ws["!cols"]=[{wch:9},{wch:25},{wch:34},{wch:42},{wch:36},{wch:52},{wch:30},{wch:28}];
+ XLSX.utils.book_append_sheet(wb,ws,"Páginas");
+ const meta=[["Dato del libro","Completar"],["Título del libro o módulo",d.book],["Área o especialidad",d.subject],["Nivel educativo",d.level],["Público destinatario",d.audience],["Propósito de aprendizaje",d.purpose],["Competencia general",d.competency],["Objetivos de aprendizaje",d.objectives],["Indicadores de logro",d.indicators],["Criterios de evaluación",d.evaluation],["Contexto u observaciones",d.context]];
+ const ms=XLSX.utils.aoa_to_sheet(meta);ms["!cols"]=[{wch:30},{wch:76}];XLSX.utils.book_append_sheet(wb,ms,"Datos del libro");
+ const guide=[["CÓMO USAR ESTE EXCEL"],["1. En la hoja Páginas, cada fila representa una página del libro."],["2. Completa principalmente Título, Tema o contenido, Qué aprenderá y Contenido clave."],["3. En Actividades escribe pocas, medias o altas según lo que necesite la página."],["4. En Recurso visual indica fotografía, esquema, tabla, secuencia o ninguno."],["5. No cambies los nombres de las columnas. Puedes dejar campos vacíos."],["6. La identidad editorial predeterminada es MARCOS; no hace falta elegirla en Excel."],["7. Guarda el archivo como .xlsx y súbelo al generador para actualizar las páginas."],["8. Mantén una progresión: apertura, desarrollo, actividades finales y proyecto."],["ESTILO EDITORIAL"],["MARCOS: fondo blanco, títulos naranja, texto negro/gris, márgenes amplios, destacados discretos, fotografías con pies y actividades claras."]];
+ const gs=XLSX.utils.aoa_to_sheet(guide);gs["!cols"]=[{wch:110}];XLSX.utils.book_append_sheet(wb,gs,"Guía rápida");
+ XLSX.writeFile(wb,"planificacion_MARCOS_sencilla.xlsx");
+}
+$("exportExcel").onclick=exportExcelNow;
+$("downloadExcelTemplate").onclick=()=>{if(window.XLSX){let wb=XLSX.utils.book_new();let rows=[{"Página":1,"Tipo":"Página inicial e introductoria","Título":"Presentación de la unidad","Tema o contenido":"Contexto y alcance","Qué aprenderá":"Reconocer qué se aprenderá","Contenido clave":"Presentación breve, importancia y contenidos principales","Actividades":"Pocas: 1 o 2","Recurso visual":"Imagen temática que resuma la unidad + diagrama o tabla central"}];let ws=XLSX.utils.json_to_sheet(rows);ws["!cols"]=[{wch:9},{wch:25},{wch:34},{wch:42},{wch:36},{wch:52},{wch:30},{wch:28}];XLSX.utils.book_append_sheet(wb,ws,"Páginas");XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Dato del libro","Completar"],["Título del libro o módulo",""],["Área o especialidad","Gastronomía"],["Nivel educativo","Técnico medio"],["Público destinatario",""],["Propósito de aprendizaje",""],["Competencia general",""],["Objetivos de aprendizaje",""],["Indicadores de logro",""],["Criterios de evaluación","SER; SABER; HACER; DECIDIR"]]),"Datos del libro");XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["GUÍA RÁPIDA"],["Una fila por página. Completa los campos que conozcas."],["No cambies los nombres de las columnas."],["Puedes dejar campos vacíos; el generador permitirá completarlos después."],["MARCOS es el estilo predeterminado: fondo blanco, naranja, texto negro/gris y destacados discretos."]]),"Guía rápida");XLSX.writeFile(wb,"plantilla_MARCOS_sencilla.xlsx")}else{alert("No se cargó el módulo Excel. Comprueba tu conexión.")}};
+function makePagePrompt(p,d){let parity=p.number%2===0?"Página PAR: banda lateral estrecha a la IZQUIERDA y teoría amplia a la DERECHA.":"Página IMPAR: teoría amplia a la IZQUIERDA y banda lateral estrecha a la DERECHA.";
+return `PROMPT INDIVIDUAL — PÁGINA ${p.number}
+Actúa como diseñador editorial y autor de libros de texto especializado en ${d.subject||"el área indicada"}.
+
+LIBRO: ${d.book||"Libro didáctico"} | Nivel: ${d.level} | Público: ${d.audience||"estudiantes"}.
+ESTILO PREDETERMINADO OBLIGATORIO: MARCOS. Fondo blanco dominante, títulos y numeración en naranja editorial, texto negro/gris, márgenes amplios, jerarquía tipográfica clara, fotografías documentales con pies breves y recuadros discretos en crema/amarillo pálido. Evitar tarjetas, sombras, iconos decorativos, grandes franjas de color y saturación.
+REFERENCIA VISUAL: ${d.referenceStyle||d.reference||"No se proporcionó referencia visual."} Adapta paleta, colores dominantes, jerarquía, marcos, tipografía, espaciados y estilo de fotografías a esa referencia, sin copiar textos.
+IDENTIDAD VISUAL COMÚN: ${d.layout}. Títulos ${d.fontTitle}; texto ${d.fontBody}; fondo blanco; formato ${d.pageSize}. Si no se indica otro formato, usar CARTA VERTICAL 8,5 × 11 pulgadas (21,59 × 27,94 cm), proporción 17:22; para imagen de página completa, referencia 2550 × 3300 px a 300 ppp. Usa ${d.accent} solo como acento pequeño y discreto; evita bloques grandes de color.
+SISTEMA EDITORIAL MODULAR: no uses una plantilla única repetitiva. Selecciona la familia visual según la función pedagógica: apertura de unidad, desarrollo, actividades finales o proyecto. Mantén la identidad común del libro (tipografías, paleta, títulos, pies de imagen, márgenes y paginación), pero cambia intencionalmente la composición y la proporción entre texto, imagen y espacios de trabajo. La variedad debe ser funcional, no decorativa.
+
+TIPO: ${p.type}.
+TÍTULO: ${p.title||"Propón un título preciso"}.
+TEMA: ${p.topic||"Desarrolla el tema correspondiente a la secuencia general, sin desviarte del módulo."}
+OBJETIVO: ${p.goal||"Propón un objetivo observable y alineado con la competencia."}
+CONTENIDO OBLIGATORIO: ${p.details||"Selecciona los contenidos esenciales y explícalos con profundidad adecuada."}
+FUENTE DEL PDF: usa el material extraído que aparece a continuación para elegir y desarrollar contenidos fieles al documento. Organiza el texto por progresión temática y evita repetir temas ya asignados a otras páginas.
+${(d.pdfExtract||"No se adjuntó texto de PDF. Si el usuario proporciona un PDF en el chat, analízalo antes de definir los contenidos.").slice(0,14000)}
+SECCIONES PERMITIDAS: ${p.sections.length?p.sections.join(", "):"Ninguna sección fija; no agregues recuadros por obligación."}
+ACTIVIDADES: ${p.activities||"Solo las necesarias según el propósito de la página."}
+UBICACIÓN DEL CUADRO DE ACTIVIDAD: ${p.activityLayout||"Automático según el contenido"}. El bloque debe usar el mismo lenguaje visual de la página (color de fondo suave, borde, acento, radio de esquina y tipografía). Si se solicita ancho completo, debe extenderse de lado a lado de la caja editorial y no quedar limitado a la columna lateral. Si se solicita toda la página como actividad, diseñar la composición completa alrededor de las consignas y espacios de respuesta.
+ESTILO MIXTO SELECCIONADO: ${p.editorialStyle||"Automático según la función pedagógica"}. Si se eligió automático, decide si conviene una combinación editorial y justifica la elección por la función de aprendizaje.
+COMPOSICIÓN SELECCIONADA: ${p.composition||"Composición variable según el contenido"}. Si se eligió composición variable, propón una maqueta adecuada y evita repetir la página anterior.
+RECURSO VISUAL: ${p.visual||"Elegir según el contenido"}.
+
+MAQUETACIÓN: ${p.type==="Página inicial e introductoria" ? "OBLIGATORIO: APERTURA EN UNA SOLA COLUMNA EDITORIAL, con composición central equilibrada, limpia y minimalista. MAQUETACIÓN PREDETERMINADA: una IMAGEN GRANDE, PROTAGONISTA Y REPRESENTATIVA que sintetice visualmente el tema de toda la unidad, ubicada en la zona central/superior y con suficiente tamaño para captar la atención; debajo o integrada con continuidad, una COLUMNA CENTRAL DE CONTENIDO, de ancho moderado y alineación editorial clara, que reúna una EXPRESIÓN INTRODUCTORIA BREVE de 2 a 4 líneas y un DIAGRAMA O TABLA SINTÉTICA con los componentes, etapas, clasificación o ideas clave. La columna central debe mantener una lectura vertical ordenada, sin dividirse en columnas laterales. Completar con título, pregunta motivadora y una pequeña franja o lista breve de lo que se aprenderá, solo si aporta. La imagen debe explicar el tema, no ser decorativa. La tabla/diagrama debe ser legible, con pocos elementos y relaciones claras. Mantener fondo blanco, acento naranja MARCOS, márgenes amplios, espacios en blanco generosos y jerarquía editorial. Evitar tarjetas repetitivas, adornos, saturación y alternancia par/impar. La imagen debe ser el foco visual y el contenido debe quedar agrupado en una columna central." : p.type==="Desarrollo" ? parity+" La teoría ocupa más espacio que la banda lateral. Alternar solo cuando la composición elegida sea de dos columnas asimétricas." : "No aplicar automáticamente la regla de banda lateral; elegir una distribución apropiada a la función de esta página."} Variar la composición respecto a la página anterior.
+
+INSTRUCCIONES: desarrolla únicamente esta página. Si es ACTIVIDADES FINALES, crea actividades concretas y resolubles a partir del PDF: preguntas de respuesta breve y desarrollo, completar frases/textos, completar esquemas o tablas, relacionar columnas, ordenar secuencias, verdadero/falso (pedir justificación cuando aporte valor), identificar partes en imágenes, ejercicios prácticos y análisis de casos. Selecciona solo los formatos marcados para esta página; no es obligatorio usar todos. No incluyas un resumen de teoría como sección principal ni la conviertas en autoevaluación repetitiva. Varía los formatos entre páginas, gradúa la dificultad y deja espacio suficiente para responder. Incluye instrucciones claras y datos necesarios; no reveles las respuestas en el enunciado. No satures el diseño con todas las secciones del libro. Usa solo las secciones seleccionadas; si no hay ninguna, diseña una página limpia centrada en el contenido. Respeta la cantidad de actividades solicitada. Prioriza el tema, el objetivo y la comprensión. Evita repeticiones con otras páginas. Deja amplias zonas en blanco; limita cada página a pocos subtítulos y uno o dos recursos visuales como máximo, salvo que el contenido exija más. Usa imágenes solo si explican un proceso, componente o concepto; evita imágenes decorativas. No añadas secciones por llenar espacio. Comprueba precisión técnica, coherencia pedagógica, paginación y continuidad. Entrega el contenido y una descripción concreta de la diagramación. Espera mi instrucción para continuar.`}
+function generatePagePrompts(){let d=data(),host=$("pagePrompts");if(!d.pagePlan.length){alert("Configura primero las fichas de cada página.");return}host.innerHTML="";d.pagePlan.forEach(p=>{let box=document.createElement("div");box.className="prompt-card";let head=document.createElement("header"),title=document.createElement("strong"),btn=document.createElement("button");title.textContent="Página "+p.number+" · "+(p.title||p.type);btn.className="btn secondary btn-3d copy-action";btn.textContent="Copiar esta página";let ta=document.createElement("textarea");ta.value=makePagePrompt(p,d);btn.onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);btn.textContent="¡Copiado!";setTimeout(()=>btn.textContent="Copiar esta página",1300)}catch(e){ta.select();document.execCommand("copy")}};head.append(title,btn);box.append(head,ta);host.appendChild(box)});host.scrollIntoView({behavior:"smooth",block:"start"})}
+$("generatePagesBtn").onclick=generatePagePrompts;
+$("copyPagesBtn").onclick=async()=>{let d=data(),t=d.pagePlan.map(p=>makePagePrompt(p,d)).join("\\n\\n"+"—".repeat(60)+"\\n\\n");if(!t){alert("Configura primero las páginas.");return}try{await navigator.clipboard.writeText(t);$("copyPagesBtn").textContent="¡Copiados!";setTimeout(()=>$("copyPagesBtn").textContent="Copiar todos los prompts",1400)}catch(e){let x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();document.execCommand("copy");x.remove()}};
+$("downloadPagesBtn").onclick=()=>{let d=data(),t=d.pagePlan.map(p=>makePagePrompt(p,d)).join("\\n\\n"+"—".repeat(60)+"\\n\\n");if(!t){alert("Configura primero las páginas.");return}let a=document.createElement("a"),u=URL.createObjectURL(new Blob([t],{type:"text/plain;charset=utf-8"}));a.href=u;a.download="prompts_individuales_por_pagina.txt";a.click();URL.revokeObjectURL(u)};
+
+// Realce 3D para acciones principales y frecuentes.
+function apply3DButtons(){
+ ["generateBtn","copyBtn","downloadBtn","generatePagesBtn","copyPagesBtn","downloadPagesBtn",
+  "exportExcel","downloadExcelTemplate","saveBtn","loadBtn","exportBtn","nextBtn","prevBtn"].forEach(id=>{
+   const el=document.getElementById(id); if(!el)return;
+   el.classList.add("btn-3d");
+   if(id.toLowerCase().includes("copy"))el.classList.add("copy-action");
+   else if(id.toLowerCase().includes("download")||id==="exportExcel")el.classList.add("download-action");
+   else if(id==="generateBtn"||id==="generatePagesBtn")el.classList.add("dark");
+  });
+}
+
+$("saveBtn").onclick=()=>{localStorage.setItem("editorialBuilder",JSON.stringify(data()));alert("Configuración guardada en este navegador.")};
+$("loadBtn").onclick=()=>{let s=localStorage.getItem("editorialBuilder");if(!s){alert("Todavía no hay una configuración guardada.");return}try{apply(JSON.parse(s));alert("Configuración cargada.")}catch(e){alert("No se pudo leer la configuración.")}};
+$("resetBtn").onclick=()=>{if(confirm("¿Crear un proyecto nuevo? Se limpiarán los campos actuales.")){document.querySelectorAll("input:not([type=checkbox]):not([type=file]),textarea").forEach(x=>x.value="");$("subject").value="Gastronomía";$("level").value="Técnico medio";$("introPages").value=1;$("contentPages").value=10;$("reviewPages").value=2;$("projectPages").value=2;$("startPage").value=1;document.querySelectorAll("#components input").forEach(x=>x.checked=["SABER","SABER HACER","SABER MÁS","PRESTA ATENCIÓN","CLAVES","PASA A LA ACCIÓN","ACTIVIDADES","TABLAS TÉCNICAS","MAPAS CONCEPTUALES","AUTOEVALUACIÓN","PROYECTO INTEGRADOR"].includes(x.value));$("output").value="";$("pdfExtract").value="";$("pdfFile").value="";$("pdfStatus").textContent="Todavía no se ha cargado ningún PDF.";show(0);total();updateStyle();renderPlanner()}};
+$("exportBtn").onclick=()=>{let a=document.createElement("a"),u=URL.createObjectURL(new Blob([JSON.stringify(data(),null,2)],{type:"application/json"}));a.href=u;a.download="configuracion_editorial.json";a.click();URL.revokeObjectURL(u)};
+$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{apply(JSON.parse(await f.text()));alert("Configuración importada.")}catch(err){alert("El archivo JSON no es válido.")}e.target.value=""};
+updateStyle();total();renderPlanner();show(0);
+apply3DButtons();
+</script>
+
+<style>
+/* Panel lateral de asistencia editorial */
+.ai-fab{position:fixed;right:22px;bottom:22px;z-index:1000;border:1px solid #087b70;border-radius:15px;padding:13px 18px;background:linear-gradient(180deg,#42d7c1 0%,#13b8a5 58%,#079486 100%);color:#073b37;font-weight:850;letter-spacing:.02em;box-shadow:0 6px 0 #087b70,0 10px 22px #152b3340;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.ai-fab:hover{transform:translateY(-2px);box-shadow:0 8px 0 #087b70,0 13px 24px #152b3340}.ai-fab:active{transform:translateY(4px);box-shadow:0 2px 0 #087b70,0 4px 10px #152b3340}
+.ai-drawer{position:fixed;z-index:1001;right:0;top:0;height:100dvh;width:min(390px,94vw);background:#fff;border-left:1px solid #d8dee6;box-shadow:-16px 0 42px #17202b26;transform:translateX(105%);transition:transform .25s ease;display:flex;flex-direction:column;color:#20242b}
+.ai-drawer.open{transform:translateX(0)}.ai-head{padding:19px 20px;background:#20242b;color:#fff;display:flex;align-items:center;justify-content:space-between}.ai-head h2{margin:0;font-size:18px}.ai-head p{margin:3px 0 0;color:#cbd5e1;font-size:12px}.ai-close{border:0;background:#ffffff20;color:#fff;border-radius:9px;padding:7px 11px;font-size:20px;cursor:pointer}
+.ai-body{padding:18px;overflow:auto;display:grid;gap:13px}.ai-note{font-size:13px;color:#596579;background:#f5f7f9;border-radius:10px;padding:11px;line-height:1.45}.ai-actions{display:grid;gap:9px}.ai-action{border:1px solid #dce2e8;border-radius:11px;background:#fff;padding:12px;text-align:left;cursor:pointer;color:#20242b}.ai-action:hover{border-color:#13b8a5;background:#f1fffc}.ai-action b{display:block;font-size:13px}.ai-action span{display:block;color:#667085;font-size:12px;margin-top:3px}.ai-primary{border:0;border-radius:11px;padding:13px;background:linear-gradient(180deg,#42d7c1,#079486);color:#073b37;font-weight:850;box-shadow:0 4px 0 #087b70;cursor:pointer}.ai-primary:active{transform:translateY(3px);box-shadow:0 1px 0 #087b70}.ai-status{font-size:12px;color:#067647;min-height:18px}.ai-backdrop{position:fixed;inset:0;background:#10182855;z-index:999;opacity:0;pointer-events:none;transition:opacity .2s}.ai-backdrop.show{opacity:1;pointer-events:auto}
+@media(min-width:700px){.ai-drawer{width:390px}}
+@media(prefers-reduced-motion:reduce){.ai-drawer,.ai-backdrop,.ai-fab{transition:none}}
+</style>
+<button class="ai-fab" id="aiFab" type="button" aria-controls="aiDrawer" aria-expanded="false">✦ ASISTENTE IA</button>
+<div class="ai-backdrop" id="aiBackdrop"></div>
+<aside class="ai-drawer" id="aiDrawer" aria-label="Asistente editorial" aria-hidden="true">
+ <div class="ai-head"><div><h2>Asistente editorial</h2><p>Ayuda para planificar y mejorar tus páginas</p></div><button class="ai-close" id="aiClose" aria-label="Cerrar">×</button></div>
+ <div class="ai-body">
+  <div class="ai-note"><b>Cómo funciona:</b> prepara una consulta con los datos de tu proyecto para que una IA como ChatGPT la analice. Este HTML no se conecta por sí solo a un modelo ni necesita una clave API.</div>
+  <div class="ai-actions">
+   <button class="ai-action" data-ai="outline"><b>✦ Organizar las páginas</b><span>Proponer qué contenido corresponde a cada página según el tema y el PDF.</span></button>
+   <button class="ai-action" data-ai="objective"><b>✦ Mejorar objetivos e indicadores</b><span>Redactar objetivos claros y evidencias observables.</span></button>
+   <button class="ai-action" data-ai="activities"><b>✦ Proponer actividades finales</b><span>Crear preguntas, completar, esquemas, ejercicios y análisis.</span></button>
+   <button class="ai-action" data-ai="coherence"><b>✦ Revisar coherencia</b><span>Detectar repeticiones, vacíos, contradicciones y páginas saturadas.</span></button>
+   <button class="ai-action" data-ai="page"><b>✦ Mejorar una página</b><span>Revisar contenido, claridad y distribución editorial de la página seleccionada.</span></button>
+  </div>
+  <button class="ai-primary" id="aiCopy">COPIAR CONSULTA PARA IA</button>
+  <button class="ai-action" id="aiOpenChat"><b>Abrir ChatGPT ↗</b><span>Abre ChatGPT para pegar la consulta copiada.</span></button>
+  <div class="ai-status" id="aiStatus" aria-live="polite"></div>
+  <div class="ai-note">Consejo: adjunta también el PDF de referencia en ChatGPT para que las sugerencias respeten su contenido y estilo editorial.</div>
+ </div>
+</aside>
+<script>
+(()=>{
+ const fab=document.getElementById('aiFab'),drawer=document.getElementById('aiDrawer'),back=document.getElementById('aiBackdrop'),close=document.getElementById('aiClose'),status=document.getElementById('aiStatus');
+ let selected='coherence',lastPrompt='';
+ const open=()=>{drawer.classList.add('open');back.classList.add('show');drawer.setAttribute('aria-hidden','false');fab.setAttribute('aria-expanded','true')};
+ const shut=()=>{drawer.classList.remove('open');back.classList.remove('show');drawer.setAttribute('aria-hidden','true');fab.setAttribute('aria-expanded','false')};
+ fab.addEventListener('click',open);close.addEventListener('click',shut);back.addEventListener('click',shut);document.addEventListener('keydown',e=>{if(e.key==='Escape')shut()});
+ document.querySelectorAll('[data-ai]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.ai;document.querySelectorAll('[data-ai]').forEach(x=>x.style.borderColor=x===b?'#13b8a5':'');status.textContent='Consulta seleccionada: '+b.querySelector('b').innerText.replace('✦ ','')+'.'}));
+ function context(){const ids=['book','subject','level','audience','purpose','context','pageCount','pagesCount','objectives','competencies','indicators','pdfText','activityStyle'];let a=[];ids.forEach(id=>{let el=document.getElementById(id);if(el&&String(el.value||'').trim())a.push(el.labels?.[0]?.innerText||id+': '+el.value)});let fields=[...document.querySelectorAll('input:not([type=file]):not([type=checkbox]):not([type=radio]),select,textarea')].filter(e=>e.value&&e.id!=='output'&&!e.closest('#aiDrawer'));fields.forEach(e=>{let label=e.labels?.[0]?.innerText||e.id;if(label&&!a.some(x=>x.startsWith(label)))a.push(label+': '+e.value)});return a.join('\n')||'Todavía no hay datos completados. Ayúdame a definir una estructura editorial inicial y pregunta solo lo imprescindible.'}
+ const tasks={outline:'Organiza automáticamente la unidad en páginas: primera página de inicio; páginas centrales de desarrollo; penúltimas páginas de ACTIVIDADES FINALES (preguntas, completar, esquemas, relacionar, ejercicios y otros); últimas páginas para el proyecto integrador. Usa el PDF adjunto como fuente principal, distribuye los contenidos sin repeticiones y explica la razón de cada decisión.',objective:'Propón o mejora competencias, objetivos de aprendizaje e indicadores observables y evaluables, alineados con los contenidos y el nivel educativo. Usa lenguaje sencillo, verbos medibles y evita objetivos genéricos.',activities:'Diseña ACTIVIDADES FINALES variadas basadas únicamente en los contenidos enseñados: preguntas, completar frases, completar esquemas, relacionar, verdadero/falso justificado, ordenar procedimientos, interpretar imágenes y ejercicios aplicados. No las llames repaso. Gradúa la dificultad y deja espacio razonable para responder.',coherence:'Audita la planificación como especialista editorial y pedagógico. Detecta contradicciones, temas repetidos, saltos de dificultad, objetivos sin evidencia, actividades que evalúan contenidos no enseñados, secciones innecesarias y páginas sobrecargadas. Devuelve correcciones concretas por página, conservando el diseño minimalista.',page:'Revisa la página o contenido seleccionado. Mejora claridad, precisión técnica, secuencia didáctica y jerarquía editorial. Recomienda solo los recursos y secciones imprescindibles; no fuerces todos los recuadros. Respeta la alternancia: páginas pares con banda lateral izquierda y teoría a la derecha; impares con teoría a la izquierda y banda lateral derecha.'};
+ function make(){return `Actúa como diseñador editorial y asesor pedagógico especializado en libros de formación técnica.
+
+TAREA: ${tasks[selected]}
+
+DATOS DEL PROYECTO:
+${context()}
+
+REGLAS EDITORIALES: diseño académico minimalista, fondo blanco, tipografía legible, negro/gris y naranja discreto; márgenes y espacios en blanco; composición asimétrica alternada según página par/impar; no saturar con recuadros ni imágenes; cada página debe tener una función clara; mantener continuidad entre páginas. No inventes datos técnicos. Si falta información del PDF, indícalo. Presenta resultados organizados por número de página y señala qué datos necesitan confirmación.`}
+ document.getElementById('aiCopy').addEventListener('click',async()=>{lastPrompt=make();try{await navigator.clipboard.writeText(lastPrompt);status.textContent='Consulta copiada. Pégala en ChatGPT junto con tu PDF.'}catch(e){let t=document.createElement('textarea');t.value=lastPrompt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();status.textContent='Consulta preparada y copiada. Pégala en ChatGPT junto con tu PDF.'}});
+ document.getElementById('aiOpenChat').addEventListener('click',()=>window.open('https://chatgpt.com/','_blank','noopener'));
+})();
+</script>
+
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const host=$("topicRows"); if(!host)return;
+ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ function addTopic(t={}) {
+  const row=document.createElement("div"); row.className="topic-row";
+  row.innerHTML=`
+   <div><label>N.º</label><input data-k="number" type="number" min="1" placeholder="1" value="${esc(t.number||"")}"></div>
+   <div><label>Título principal / tema</label><input data-k="topic" placeholder="Ej. Masas fermentadas" value="${esc(t.topic||"")}"></div>
+   <div class="wide"><label>Contenido central que deseas desarrollar</label><input data-k="content" placeholder="Ej. Características, composición y función de las masas fermentadas" value="${esc(t.content||"")}"></div>
+   <div class="wide"><label>Subtítulos principales (uno por línea)</label><textarea data-k="subtitles" placeholder="1. Concepto y características&#10;2. Clasificación de las masas fermentadas&#10;3. Ingredientes y sus funciones&#10;4. Proceso de elaboración">${esc(t.subtitles||t.subtopics||"")}</textarea></div>
+   <div class="wide"><label>Otros títulos o subtítulos que podrían complementar (opcional)</label><textarea data-k="extras" placeholder="Ej. Errores frecuentes&#10;Control de calidad&#10;Aplicaciones en productos de panadería">${esc(t.extras||"")}</textarea></div>
+   <div><label>Páginas sugeridas</label><input data-k="pages" placeholder="2–3" value="${esc(t.pages||"")}"></div>
+   <button type="button" class="topic-remove" title="Eliminar tema" aria-label="Eliminar tema">×</button>`;
+  row.querySelector(".topic-remove").addEventListener("click",()=>{row.remove();updateCount()});
+  host.appendChild(row);updateCount();
+ }
+ function readTopicPlan(){return [...host.querySelectorAll(".topic-row")].map(r=>Object.fromEntries([...r.querySelectorAll("[data-k]")].map(x=>[x.dataset.k,x.value.trim()]))).filter(x=>x.topic||x.subtopics)}
+ function updateCount(){const n=readTopicPlan().length;$("topicCount").textContent=n+" tema"+(n===1?"":"s")+" registrados"}
+ function formatTopicPlan(a){return (a||[]).map((x,i)=>`${x.number||i+1}. TÍTULO PRINCIPAL: ${x.topic||"Tema por definir"}\nCONTENIDO CENTRAL: ${x.content||"Por definir"}\nSUBTÍTULOS: ${x.subtitles||x.subtopics||"Por proponer"}\nOTROS TÍTULOS/SUBTÍTULOS COMPLEMENTARIOS: ${x.extras||"Proponer solo si aportan valor"}\nPÁGINAS: ${x.pages||"Por distribuir"}`).join("\n\n")||"No se proporcionó un temario específico. Propón títulos, contenidos y subtítulos a partir del PDF y solicita validación."}
+ window.readTopicPlan=readTopicPlan;window.formatTopicPlan=formatTopicPlan;
+ $("addTopicBtn").addEventListener("click",()=>addTopic({number:readTopicPlan().length+1}));
+ $("copyTopicPlan").addEventListener("click",async()=>{const text=formatTopicPlan(readTopicPlan());try{await navigator.clipboard.writeText(text);$("copyTopicPlan").textContent="¡Copiado!";setTimeout(()=>$("copyTopicPlan").textContent="Copiar temario",1300)}catch(e){alert("Selecciona y copia el temario manualmente.")}});
+ function makeTopicAI(){const book=$("book")?.value||"Módulo didáctico";const subject=$("subject")?.value||"Área por definir";const level=$("level")?.value||"Nivel por definir";const pdf=$("pdfExtract")?.value||"";return `Actúa como especialista curricular y diseñador editorial de libros de formación técnica.\n\nNecesito organizar el temario del módulo: ${book}. Área: ${subject}. Nivel: ${level}.\n\nAnaliza el PDF adjunto como fuente principal. Propón una estructura clara de TEMAS, CONTENIDOS y SUBCONTENIDOS, con progresión de lo básico a lo complejo. Evita duplicaciones, integra teoría y procedimientos técnicos cuando corresponda y no inventes información que contradiga el documento.\n\nPara cada tema entrega: número, TÍTULO PRINCIPAL, CONTENIDO CENTRAL, SUBTÍTULOS principales ordenados, subapartados específicos y OTROS TÍTULOS/SUBTÍTULOS complementarios que podrían incluirse. Sugiere apartados como concepto, importancia, clasificación, características, ingredientes y funciones, utensilios/equipos, técnicas, procedimiento paso a paso, parámetros de control, higiene e inocuidad, seguridad, errores frecuentes, control de calidad, conservación, costos/emprendimiento y aplicaciones, pero selecciona solo los pertinentes. Explica cuáles son esenciales y cuáles opcionales; sugiere páginas. Distingue contenidos esenciales de complementarios. Distribuye el temario entre las páginas disponibles respetando: una única primera página inicial-introductoria (presentación + contextualización en la misma página), páginas centrales de desarrollo, penúltimas páginas de ACTIVIDADES FINALES y últimas páginas de proyecto final. Sugiere un volumen realista por página y evita saturar.\n\nSi el PDF no está adjunto, indícalo y solicita que lo adjunte antes de afirmar que el temario está basado en él.\n\nTEMARIO ACTUAL (si existe):\n${formatTopicPlan(readTopicPlan())}\n\nTEXTO EXTRAÍDO DEL PDF DISPONIBLE:\n${pdf.slice(0,9000)||"No se ha extraído texto en el HTML; adjuntaré el PDF directamente en ChatGPT."}\n\nDevuelve la propuesta en una tabla fácil de copiar a Excel con columnas: Numero, Titulo_principal, Contenido_central, Subtitulos, Otros_titulos_subtitulos, Paginas_sugeridas. Usa lenguaje sencillo y títulos concretos.`}
+ $("topicAiBtn").addEventListener("click",()=>{$("topicAiPrompt").value=makeTopicAI();$("topicAiResult").hidden=false;$("topicAiResult").scrollIntoView({behavior:"smooth",block:"nearest"})});
+ $("copyTopicAiPrompt").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("topicAiPrompt").value);$("copyTopicAiPrompt").textContent="¡CONSULTA COPIADA!";setTimeout(()=>$("copyTopicAiPrompt").textContent="COPIAR CONSULTA PARA IA",1500)}catch(e){$("topicAiPrompt").select();document.execCommand("copy")}});
+ function downloadWorkbook(){
+  if(!window.XLSX){alert("No se cargó el módulo Excel. Conéctate a Internet y vuelve a intentarlo.");return}
+  const wb=XLSX.utils.book_new();
+  const rows=readTopicPlan().map((x,i)=>({Numero:x.number||i+1,Titulo_principal:x.topic,Contenido_central:x.content,Subtitulos:x.subtitles||x.subtopics,Otros_titulos_subtitulos:x.extras,Paginas_sugeridas:x.pages}));
+  if(!rows.length)rows.push({Numero:1,Titulo_principal:"",Contenido_central:"",Subtitulos:"",Otros_titulos_subtitulos:"",Paginas_sugeridas:""});
+  const ws=XLSX.utils.json_to_sheet(rows);
+  ws["!cols"]=[{wch:9},{wch:34},{wch:48},{wch:54},{wch:44},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws,"Temario");
+  const design=XLSX.utils.aoa_to_sheet([["Dato de diseño","Elegir o completar"],["Estilo editorial","MARCOS: fondo blanco, naranja editorial, texto negro/gris y composición limpia"],["Color principal","Naranja MARCOS (#E87524)"],["Tipografía de títulos","Sans serif"],["Tipografía de texto","Serif legible"],["Formato de página","Carta vertical: 8,5 × 11 pulgadas (21,59 × 27,94 cm)"],["Proporción de imagen de página","17:22 (0,773:1), orientación vertical"],["Resolución de referencia","2550 × 3300 px a 300 ppp"],["Cantidad total de páginas",""],["Observaciones de diseño","Pocas imágenes funcionales, fotografías rectangulares, no deformar ni recortar la página"]]);
+  design["!cols"]=[{wch:30},{wch:70}];XLSX.utils.book_append_sheet(wb,design,"Diseño");
+  const guide=XLSX.utils.aoa_to_sheet([["GUÍA RÁPIDA"],["Temario: una fila por tema principal."],["Escribe títulos breves y concretos."],["Ordena los subtítulos desde lo básico hasta lo aplicado."],["Usa Otros títulos/subtítulos solo si realmente aportan al tema."],["El estilo MARCOS se aplica automáticamente en el generador."]]);guide["!cols"]=[{wch:95}];XLSX.utils.book_append_sheet(wb,guide,"Guía rápida");
+  XLSX.writeFile(wb,"temario_sencillo_modulo.xlsx");
+ }
+ $("topicExcelBtn").addEventListener("click",downloadWorkbook);
+ $("topicExcelImport").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{if(!window.XLSX)throw new Error("No se pudo cargar el lector Excel.");const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});const sh=wb.Sheets["Temario"]||wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(sh,{defval:""});host.innerHTML="";
+  rows.forEach((r,i)=>addTopic({number:r.Numero||r.numero||i+1,topic:r.Titulo_principal||r.Tema||r.tema||"",content:r.Contenido_central||r.Contenido||"",subtitles:r.Subtitulos||r.Contenido_y_subcontenidos||r.Subcontenidos||"",extras:r.Otros_titulos_subtitulos||"",pages:r.Paginas_sugeridas||r.Paginas||""}));
+  const ds=wb.Sheets["Diseño"];if(ds){const drows=XLSX.utils.sheet_to_json(ds,{header:1,defval:""});const vals=Object.fromEntries(drows.slice(1).map(r=>[r[0],r[1]]));if(vals["Estilo editorial"]&&$("density"))$("density").value=vals["Estilo editorial"];if(vals["Color principal"]&&$("accent")){const c=String(vals["Color principal"]).toLowerCase();if(c.includes("naranja"))$("accent").value="#E87524";else if(c.startsWith("#"))$("accent").value=c;}}
+  updateCount();alert("Temario importado. Revisa los temas y subcontenidos.");}catch(err){alert("No se pudo importar el Excel: "+err.message)}e.target.value="";
+ });
+ // Keep thematic contents available to the existing master prompt builder.
+ const originalBuild=window.buildPrompt;
+})();
+</script>
+
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id); let recognition=null, speaking=false;
+ const status=(t)=>{const el=$('voiceStatus');if(el)el.textContent=t};
+ function cleanText(el){let clone=el.cloneNode(true);clone.querySelectorAll('button,input,select,textarea,.voice-btn,.voice-bar').forEach(x=>x.remove());return (clone.innerText||clone.textContent||'').replace(/\s+/g,' ').trim()}
+ function sectionText(){const active=document.querySelector('.page-step:not(.hidden)');return active?cleanText(active):document.querySelector('main')?.innerText||''}
+ function speak(text){if(!('speechSynthesis' in window)){status('Este navegador no admite lectura de voz.');return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='es-BO';u.rate=0.95;u.pitch=1;u.onstart=()=>{speaking=true;status('Leyendo en voz alta…')};u.onend=()=>{speaking=false;status('Lectura terminada.')};u.onerror=()=>{speaking=false;status('No se pudo completar la lectura.')};speechSynthesis.speak(u)}
+ $('readSectionBtn')?.addEventListener('click',()=>speak(sectionText()));
+ $('readAllBtn')?.addEventListener('click',()=>{const texts=[...document.querySelectorAll('.page-step')].map(x=>cleanText(x)).filter(Boolean);speak(texts.join('\n\n'))});
+ $('pauseVoiceBtn')?.addEventListener('click',()=>{if(!('speechSynthesis'in window))return;if(speechSynthesis.paused){speechSynthesis.resume();status('Continuando lectura…')}else{speechSynthesis.pause();status('Lectura pausada.')}});
+ $('stopVoiceBtn')?.addEventListener('click',()=>{if('speechSynthesis'in window)speechSynthesis.cancel();speaking=false;status('Lectura detenida.')});
+ function startDictation(target){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){status('El dictado no está disponible en este navegador. Prueba Chrome o Edge.');return}if(recognition){recognition.stop();recognition=null}
+  recognition=new SR();recognition.lang='es-BO';recognition.continuous=true;recognition.interimResults=true;let finalText='';recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){let part=e.results[i][0].transcript;if(e.results[i].isFinal)finalText+=part+' ';else interim+=part}target.value=(target.dataset.voiceBase||'')+finalText+interim;target.dispatchEvent(new Event('input',{bubbles:true}));};recognition.onerror=e=>status(e.error==='not-allowed'?'Permite el acceso al micrófono en el navegador.':'Error de dictado: '+e.error);recognition.onend=()=>{target.dataset.voiceBase=target.value;target.classList.remove('voice-recording');status('Dictado finalizado. Puedes editar el texto reconocido.');recognition=null};target.dataset.voiceBase=(target.value?target.value+' ':'');target.classList.add('voice-recording');status('Escuchando… habla con claridad. Pulsa de nuevo el micrófono para terminar.');recognition.start();}
+ $('dictateBtn')?.addEventListener('click',()=>{let el=document.activeElement;if(!el||!['INPUT','TEXTAREA'].includes(el.tagName)){status('Primero selecciona un campo de texto y vuelve a pulsar dictar.');return}if(recognition){recognition.stop();return}startDictation(el)});
+ function addControls(){document.querySelectorAll('.page-step h2,.topic-head h3').forEach(h=>{if(h.dataset.voiceReady)return;h.dataset.voiceReady='1';let wrap=document.createElement('div');wrap.className='voice-section';let b=document.createElement('button');b.type='button';b.className='voice-btn';b.textContent='🔊 Leer esta sección';b.addEventListener('click',()=>{let root=h.closest('.page-step')||h.closest('.topic-manager');speak(cleanText(root||h.parentElement))});wrap.appendChild(b);h.insertAdjacentElement('afterend',wrap)});
+  document.querySelectorAll('.page-step input:not([type=file]):not([type=checkbox]):not([type=radio]),.page-step textarea,.topic-manager input:not([type=file]),.topic-manager textarea').forEach(el=>{if(el.dataset.micReady)return;el.dataset.micReady='1';let b=document.createElement('button');b.type='button';b.className='voice-btn';b.textContent='🎙 Dictar';b.title='Dictar texto en este campo';b.addEventListener('click',()=>{if(recognition){recognition.stop();return}startDictation(el)});el.insertAdjacentElement('afterend',b)});
+ }
+ addControls();new MutationObserver(addControls).observe(document.querySelector('main'),{childList:true,subtree:true});
+})();
+</script>
+
+<a id="selectorReturnV" href="index.html" aria-label="Volver al selector de versiones">← Selector de versiones</a>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.warn("No se pudo registrar el modo PWA:", error));
+  });
+}
+</script>
+
+<style id="floating-controls-layout">
+/* Distribución de controles flotantes: IA y selector nunca comparten espacio */
+#selectorReturnV{
+ position:fixed;left:18px;right:auto;bottom:18px;z-index:99999;
+ display:inline-flex;align-items:center;gap:8px;padding:11px 16px;
+ border-radius:12px;background:#20242b;color:#fff;text-decoration:none;
+ font:700 13px/1.2 Arial,sans-serif;box-shadow:0 5px 0 #101318,0 8px 18px #0003;
+ max-width:calc(50vw - 28px);white-space:normal;
+}
+#selectorReturnV:hover{transform:translateY(-2px);background:#343b46}
+.ai-fab{right:18px;left:auto;bottom:18px;z-index:100000}
+.ai-backdrop{z-index:100001}
+.ai-drawer{z-index:100002}
+@media(max-width:640px){
+ #selectorReturnV{left:12px;right:12px;bottom:12px;max-width:none;justify-content:center}
+ .ai-fab{left:12px;right:12px;bottom:68px;width:calc(100% - 24px);justify-content:center}
+}
+@media print{#selectorReturnV,.ai-fab,.ai-backdrop,.ai-drawer{display:none!important}}
+</style>
+</body>
+</html>
