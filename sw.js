@@ -1,11 +1,11 @@
-const CACHE_NAME = "marcos-editorial-v2";
+const CACHE_NAME = "marcos-editorial-v3";
 const CORE = [
  "./", "./index.html",
  "./disenador_editorial_marcos_v20.html",
  "./disenador_editorial_marcos_v21.html",
  "./manifest.webmanifest",
  "./pwa-icons/icon-192.png",
- "./pwa-icons/icon-512.png"
+ "./pwa-icons/icon-512.png",\n "./pwa-icons/logo-marcos.png"
 ];
 self.addEventListener("install", event => {
  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));

@@ -221,6 +221,7 @@ textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus
 .font-status{font-size:12px;color:#475569;margin-top:7px}
 @media(max-width:640px){.font-upload-panel .font-controls{grid-template-columns:1fr}}
 
+.marcos-header-logo{display:block;width:76px;height:76px;object-fit:cover;border-radius:17px;border:2px solid #ffffff35;box-shadow:0 6px 18px #0003;margin:0 0 10px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -341,6 +342,7 @@ textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus
 </script>
 
 <header>
+  <img class="marcos-header-logo" src="./pwa-icons/logo-marcos.png" alt="MARCOS">
   <div class="eyebrow">Herramienta de diseño y planificación</div>
   <h1>Diseñador editorial</h1>
   <p>Genera libros didácticos con estilo MARCOS predeterminado. Organiza páginas y temario con una planificación sencilla, coherente y fácil de editar en Excel.</p>
@@ -631,7 +633,7 @@ $("previewPage").addEventListener("input",updateParityPreview);
 function num(id,def){let v=parseInt($(id).value,10);return Number.isFinite(v)?v:def}
 function total(){let t=num("introPages",1)+num("contentPages",10)+num("reviewPages",2)+num("projectPages",2);$("pageTotal").textContent="Total estimado: "+t+" páginas. Numeración: "+num("startPage",1)+" a "+(num("startPage",1)+t-1)+".";return t}
 ["introPages","contentPages","reviewPages","projectPages","startPage"].forEach(id=>$(id).addEventListener("input",()=>{let old=readPagePlan();total();renderPlanner(old)}));
-function val(id){return $(id).value.trim()}
+function val(id){const el=$(id);return el?String(el.value??"").trim():""}
 function checked(){return [...document.querySelectorAll("#components input:checked")].map(x=>x.value)}
 function data(){return {book:val("book"),subject:val("subject"),level:val("level"),audience:val("audience"),purpose:val("purpose"),context:val("context"),layout,fontTitle:val("fontTitle"),fontBody:val("fontBody"),customFontName:customFont.name,customFontFileName:customFont.fileName,customFontTarget:customFont.target,accent:val("accent"),activityColor:val("activityColor"),corners:val("corners"),density:val("density"),reference:val("reference"),referenceStyle:val("styleReferenceNotes"),introPages:num("introPages",1),contentPages:num("contentPages",10),reviewPages:num("reviewPages",2),projectPages:num("projectPages",2),startPage:num("startPage",1),pageSize:val("pageSize"),sequence:val("sequence"),competency:val("competency"),objectives:val("objectives"),indicators:val("indicators"),evaluation:val("evaluation"),components:checked(),imagePolicy:val("imagePolicy"),activityStyle:val("activityStyle"),pagePlan:readPagePlan(),pdfExtract:val("pdfExtract"),topicPlan:readTopicPlan()}}
 
@@ -821,7 +823,7 @@ function buildPrompt(){let d=data(),totalPages=total(),start=d.startPage,end=sta
 "",
 "INSTRUCCIÓN INICIAL: analiza estos datos, detecta vacíos o contradicciones y presenta primero el esquema completo. Haz solo las preguntas imprescindibles que falten. No desarrolles todavía la página 1."
 ];return lines.join("\n")}
-$("generateBtn").onclick=()=>{$("output").value=buildPrompt();review();$("output").scrollIntoView({behavior:"smooth",block:"center"})};
+$("generateBtn").onclick=()=>{try{const prompt=buildPrompt();if(!prompt||!prompt.trim())throw new Error("No se pudo construir el prompt. Revisa los datos del proyecto.");$("output").value=prompt;review();$("output").scrollIntoView({behavior:"smooth",block:"center"});$("generateBtn").textContent="¡Prompt generado!";setTimeout(()=>$("generateBtn").textContent="Generar prompt",1500)}catch(err){console.error("Error al generar prompt:",err);alert("No se pudo generar el prompt: "+err.message)}};
 $("copyBtn").onclick=async()=>{if(!$("output").value)$("output").value=buildPrompt();try{await navigator.clipboard.writeText($("output").value);$("copyBtn").textContent="¡Copiado!";setTimeout(()=>$("copyBtn").textContent="Copiar prompt",1600)}catch(e){$("output").select();document.execCommand("copy")}};
 $("downloadBtn").onclick=()=>{let t=$("output").value||buildPrompt(),a=document.createElement("a"),u=URL.createObjectURL(new Blob([t],{type:"text/plain;charset=utf-8"}));a.href=u;a.download="prompt_editorial_"+(val("book").replace(/[^a-z0-9]/gi,"_")||"libro")+".txt";a.click();URL.revokeObjectURL(u)};
 

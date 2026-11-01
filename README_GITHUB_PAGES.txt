@@ -38,3 +38,17 @@ USO SIN CONEXIÓN
 
 RECOMENDACIÓN
 Exporta periódicamente tus proyectos JSON. Esta versión no implementa cuentas de usuario ni respaldo remoto.
+
+CORRECCIÓN V3
+- Se corrigió la lectura de campos opcionales que no existen en la versión simplificada V21.
+- El botón «Generar prompt» ahora genera el texto aunque esos campos avanzados estén ocultos o no formen parte de la interfaz.
+- Se añadió manejo de errores para informar si ocurre algún problema durante la generación.
+
+IDENTIDAD VISUAL MARCOS
+- Se incorporó el nuevo logotipo MARCOS en el selector de versiones y en los encabezados de V20 y V21.
+- Los iconos de instalación PWA 192x192 y 512x512 se actualizaron con el nuevo logotipo.
+- El manifest define nombre, color, modo standalone y los iconos de la aplicación.
+- El service worker usa una nueva versión de caché e incluye el logotipo para uso sin conexión.
+
+ACTUALIZACIÓN
+Reemplaza todos los archivos del repositorio por los de este paquete. Si ya tenías la PWA instalada, abre la aplicación con conexión una vez para que descargue la nueva identidad visual y los recursos actualizados.
